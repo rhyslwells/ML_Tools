@@ -44,12 +44,6 @@ print(df['posting_effectiveness'])
 
 #---------------------------------------------------------------
 
-# Save preprocessed data
-# df.to_csv('eda_job_postings.csv', index=False)
-
-
-#---------------------------------------------------------------
-
 
 def pull_company_data(company_id):
     # Read employee counts data

@@ -45,7 +45,11 @@ for title in top_titles_list:
 
 print(companies_with_multiple_posts)
 
-
+# Questions
+most_common_titles = df['title'].value_counts().head(10)
+print("Top 10 most common job titles:\n", most_common_titles)
+top_titles_list = most_common_titles.index.tolist()
+print("List of Top 10 most common job titles:\n", top_titles_list)
 
 # Initialize an empty dictionary to store the results
 companies_with_multiple_posts = {}
