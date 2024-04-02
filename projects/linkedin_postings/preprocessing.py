@@ -45,13 +45,15 @@ print("Numerical columns:", list(numerical_feats))
 other_features=['job_id', 'company_id']
 
 #ensure job_id and company_id are integers
-df['job_id'] = df['job_id'].astype(int)
-df['company_id'] = df['company_id'].astype(int)
+# df['job_id'] = df['job_id'].astype(int)
 
 
 # Drop rows with missing company_id
 df.dropna(subset=['company_id'], inplace=True)
+df['company_id'] = df['company_id'].astype(int)
+
 # df['company_id'].isna().sum()=0
+# df.head()
 
 #---------------------------------------------------------------
 
@@ -60,15 +62,14 @@ df.dropna(subset=['company_id'], inplace=True)
 df_cat=df[object_feats]
 df_cat.columns
 
-# Location (all values filled)
+# Location (all values filled) #done
 df["location"].value_counts()
 
-
-
-#Work type
+#Work type #done
 df["formatted_work_type"].value_counts()
+df["formatted_work_type"].isna().sum()
 
-# 'title', 
+# 'title', #done
 unique_titles_count = df['title'].nunique()
 # df["title"].isna().sum() =0
 
@@ -76,11 +77,11 @@ unique_titles_count = df['title'].nunique()
 df["formatted_experience_level"].unique()
 most_common_experience_level = df['formatted_experience_level'].mode()[0]
 #q: how many have na?
-number_of_na = df['formatted_experience_level'].isna().sum()
+df['formatted_experience_level'].isna().sum()
 # q: how can we populate those with nan values for formatted_experience_level?
 # a: we can fill the missing values with the most common experience level in the dataset.
 df['formatted_experience_level'].fillna(most_common_experience_level, inplace=True)
-df['formatted_experience_level'].value_counts()
+df['formatted_experience_level'].isna().sum()
 
 
 #Pay period #TODO!
@@ -89,11 +90,10 @@ df["pay_period"].value_counts()
 #count the number of mission values
 df["pay_period"].isna().sum()
 
+
 # get the term that has pay period 'ONCE'
-once = df[df['pay_period'] == 'ONCE']
 #drop this term
 df = df[df['pay_period'] != 'ONCE']
-
 
 
 df["pay_period"].isna().sum()
@@ -120,6 +120,11 @@ df.loc[df['pay_period'] == 'HOUR', 'max_salary'] *= 2080
 df.loc[df['pay_period'] == 'HOUR', 'min_salary'] *= 2080
 df.loc[df['pay_period'] == 'HOUR', 'med_salary'] *= 2080
 
+# Calculate median salary
+df['med_salary'] = (df['min_salary'] + df['max_salary']) / 2
+
+# Print the first 100 rows of min_salary, med_salary, and max_salary
+print(df[['min_salary', 'med_salary', 'max_salary']].tail(10))
 
 # how can we determine the pay_period for those that are missing?
 
@@ -131,18 +136,50 @@ df.loc[df['pay_period'] == 'HOUR', 'med_salary'] *= 2080
 # now drop the pay_period column
 df.drop('pay_period', axis=1, inplace=True)
 
-# industry_id
+#---------------------------------------------------------------
+features=['max_salary', 'med_salary', 'min_salary','industry_id']
+#fill in if know others
 
-# for df based on job_id with job_details\job_industries.csv get industry_id.
+
+# Put in descending order with respect to med_salary
+# df[features].sort_values(by='med_salary', ascending=False).head()
+
+# Get entries with missing values for med_salary
+# missing_med_salary = df[df['med_salary'].isna()]
+# missing_med_salary.head()
+
 # Read job_industries data
 job_industries = pd.read_csv('job_details/job_industries.csv')
 # Merge df with job_industries to get the corresponding industry_id
 df = pd.merge(df, job_industries[['job_id', 'industry_id']], on='job_id', how='inner')
 df.head()
 
-df['med_salary']=df['min_salary']+df['max_salary']/2
+# Group by industry_id and get the average med_salary
+industry_avg_salary = df.groupby('industry_id')['med_salary'].mean()
 
-# now group by industry_id and get the average min_salary, max_salary
+# If med_salary is not present, use industry_avg_salary
+df['med_salary'] = df['med_salary'].fillna(df['industry_id'].map(industry_avg_salary))
+
+# there are still those without med_salary but it is small 0.224173%
+
+#drop rows with missing med_salary
+df.dropna(subset=['med_salary'], inplace=True)
+
+#round med_salary to nearest integer with no .0
+df['med_salary'] = df['med_salary'].round(0).astype(int)
+
+df[features].head()
+
+#fix below
+#example
+# df[features][df[features]['industry_id'] == 17].tail()
+
+
+
+#drop max_salary, min_salary
+features_to_drop= features=['max_salary', 'min_salary']
+df.drop(features_to_drop, axis=1, inplace=True)
+
 
 
 
@@ -150,8 +187,8 @@ df['med_salary']=df['min_salary']+df['max_salary']/2
 
 # cleaning numerical features
 
-df_num=df[numerical_feats]
-df_num.columns
+# df_num=df[numerical_feats]
+# df_num.columns
 
 #Remote #DONE
 # fill missing values
@@ -171,64 +208,12 @@ df["applies"].isna().sum()
 df["applies"].fillna(0, inplace=True)
 df["applies"].isna().sum()
 
-#salaries
 
-
-
-
-# determine how many entries have missing values for max_salary, min_salary, and med_salary
-missing_max_salary = df['max_salary'].isna().sum()
-missing_min_salary = df['min_salary'].isna().sum()
-missing_med_salary = df['med_salary'].isna().sum()
-
-print("Number of missing values for max_salary:", missing_max_salary)
-print("Number of missing values for min_salary:", missing_min_salary)
-print("Number of missing values for med_salary:", missing_med_salary)
-
-#if med_salary is not present, we can calculate it using the formula (max_salary + min_salary) / 2
-df['med_salary'] = df['med_salary'].fillna((df['max_salary'] + df['min_salary']) / 2)
-
-# if there is only one value in min_salary and max_salary, we can assume that the salary is fixed.
-# df['med_salary'] = df[['min_salary', 'max_salary']].mean(axis=1)
-
-# based on the pay period we can calculate the missing values for max_salary, min_salary, and med_salary
-
-
-
-df['pay_period'].value_counts()
-
-
-
-
-
-# determine the entries with missing values for max_salary, min_salary, and med_salary
-missing_entries = df[df['max_salary'].isna() & df['min_salary'].isna() & df['med_salary'].isna()]
-print("Entries with missing values for max_salary, min_salary, or med_salary:")
-print(missing_entries.shape)
-
-
-
-#'max_salary'
-df["max_salary"].isna().sum()
-
-# 'med_salary', 
-df["med_salary"].isna().sum()
-
-# 'min_salary'
-df["min_salary"].isna().sum()
-
-
-
-
-
-
-
-
-#---------------------------------------------------------------
-
+missing_percentage = df.isna().mean() * 100
+print("Percentage of missing values for each column:",missing_percentage)
 
 # Save preprocessed data
-# df.to_csv('preprocessed_job_postings.csv', index=False)
+df.to_csv('preprocessed_job_postings.csv', index=False)
 
 
 
