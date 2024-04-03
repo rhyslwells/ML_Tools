@@ -9,51 +9,13 @@ from collections import Counter
 from wordcloud import STOPWORDS
 import re
 
+#    - Visualize distributions of key features like salary (`median_salary`), 
+# experience level (`formatted_experience_level`), job classifications, etc., to understand their characteristics.
+#    - Investigate relationships between features, for example, the relationship between job classification and median salary, or between pay period and maximum salary.
+
 # Load data
 df = pd.read_csv('preprocessed_job_postings.csv')
 
-"""
-Summary:
-
-2. **Exploratory Data Analysis (EDA)**:
-   - Visualizes distributions of key features like salary, experience level.
-   - Identifies common job titles and their occurrences.
-
-3. **Salary Analysis**:
-   - Determines the top companies with the highest median salary.
-   - Investigates the distribution of median salaries and identifies entry-level wages for each industry.
-
-4. **Experience Level Analysis**:
-   - Visualizes the distribution of job postings by experience level.
-
-5. **Views Analysis**:
-   - Identifies outliers in the number of views for job postings and investigates the distribution of views across companies.
-   
-6. **Skills Analysis**:
-   - Determines which companies pay the most for specific skills.
-   - Identifies skills with the highest average salary.
-
-7. **Location Analysis**:
-   - Determines the best locations for specific industries based on average salary.
-   - Identifies prevalent locations for a specific industry and set of skills.
-   - Groups job postings by industry ID and skills abbreviation for specific locations (e.g., Houston, TX).
-"""
-
-# How many unique companies are there
-df['company_id'].value_counts().shape
-# How many postings does each company have (they have multple postings)
-# What is the distrubition of postings by company
-df[df['company_id'] == 92699700].shape
-# The same company will post the same job_id but with a different industry.
-# groupby job_id
-
-# Top 10 most common job titles
-most_common_titles = df['title'].value_counts().head(10)
-print("Top 10 most common job titles:\n", most_common_titles)
-top_titles_list = most_common_titles.index.tolist()
-print("List of Top 10 most common job titles:\n", top_titles_list)
-title="Project Manager"
-df_title = df[df["title"] == title]
 
 # Experience level
 # distribution of formatted_experience_level as bar graph
@@ -99,10 +61,6 @@ df[df["views"]<100].shape
 df[df["views"]>100].shape
 # Reasons for minimal view counts can be reduced time of post on site (explore post time of site)
 
-# Which companies are in the top ten quartile of views
-top_10_percentile = np.percentile(df['views'], 90)
-top_10_companies = df[df['views'] >= top_10_percentile]['company_id'].unique()
-print("Company IDs in the top 10th percentile of views:", top_10_companies)
 
 
 #Skills 
@@ -131,7 +89,7 @@ print(ranked_skills.head(10))  # Display the top 10 skills with the highest aver
 
 
 
-#Location
+#location
 #determine the best location for a specific industry,
 def get_best_locations_for_industry(df, industry_id):
     """
@@ -188,6 +146,7 @@ def identify_prevalent_locations_with_criteria(df, industry_id, skills):
     ranked_locations = location_job_postings.sort_values(by='num_job_postings', ascending=False)
 
     return ranked_locations
+
 # Call the function to identify prevalent locations for a specific industry and skills
 industry_id = 135  # Example industry ID
 skills = ['ENG', 'IT']  # Example list of skills
@@ -202,7 +161,120 @@ tx_grouped.get_group((135, 'IT')).shape
 
 
 
+#using random forest:
+Given an industry, skill_abr, location, make a prediction on the salaray
 
 
+
+Which industry is most likely to offer remote work?
+'industry_id', 'remote_allowed','skill_abr'
+
+"""
+
+"""
+
+#ideas:
+#Add another metric like 
+# which industries offer remote? (use remote), cluster views and med_salary
+# Which companies get the top quartile of views.
+
+
+# #cluster
+# applies vs industry_id
+
+# med_salary vs Industry id
+
+
+#---------------------------------------------------------------
+
+# Save preprocessed data
+# df.to_csv('eda_job_postings.csv', index=False)
+
+
+#---------------------------------------------------------------
+
+
+# What are all the attributes we have for a job posting?
+# we have two dataframes for agiven job posting.
+
+# # Questions
+
+# ## Which companies post the same job title multiple times? Why would they do this?
+
+# Top 10 most common job titles
+most_common_titles = df['title'].value_counts().head(10)
+print("Top 10 most common job titles:\n", most_common_titles)
+
+
+top_titles_list = most_common_titles.index.tolist()
+
+# Display the list of top job titles
+print("List of Top 10 most common job titles:\n", top_titles_list)
+
+
+
+
+
+#extract rows with title
+
+# title = "Sales Manager"
+title="Project Manager"
+df_title = df[df["title"] == title]
+
+
+# Group by 'company_id'
+grouped_df = df_title.groupby('company_id').size().reset_index(name='count')
+sorted_grouped_df = grouped_df.sort_values(by='count', ascending=False)
+
+# Display the grouped DataFrame
+print(sorted_grouped_df)
+
+
+# Initialize an empty dictionary to store the results
+companies_with_multiple_posts = {}
+
+for title in top_titles_list:
+    df_title = df[df["title"] == title]
+    grouped_df = df_title.groupby('company_id').size().reset_index(name='count')
+    sorted_grouped_df = grouped_df.sort_values(by='count', ascending=False)
+    
+    # Extract the company ids for which the count exceeds 5
+    companies = sorted_grouped_df[sorted_grouped_df['count'] > 3]['company_id'].tolist()
+    
+    # Add the result to the dictionary
+    companies_with_multiple_posts[title] = companies
+
+# Now, companies_with_multiple_posts is a dictionary where the keys are job titles and the values are lists of company ids
+print(companies_with_multiple_posts)
+
+
+selected_company_id = 73013724.0
+
+# Merge the two DataFrames based on 'company_id'
+result_df = pd.merge(df, grouped_df[grouped_df["company_id"] == selected_company_id], on='company_id', how='inner')
+
+# Display the resulting DataFrame
+result_df.head()
+
+
+
+# is there any duplicate rows after removing identifiers, but with different locations, posted by the same person or different companies?
+#Which companies are looking for the same title/job_classification (what constitues the same job)
+
+
+# ## Analysis with job classifications
+
+#Distrubition of job_classification wrt views.
+
+#number of applications for each job classification compared to the number of views
+# or ratio of applications to views fo each class
+
+#Are there certain job_classification associated with median salaries?
+
+# plt.figure(figsize=(12, 8))
+# # sns.boxplot(x='job_classification', y='median_salary', data=df)
+# plt.xticks(rotation=90)
+# plt.title('Boxplot of median Salary by Job Title')
+# plt.show()
 
 

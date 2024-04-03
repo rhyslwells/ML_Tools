@@ -16,8 +16,7 @@ features_to_keep = ['job_id', 'company_id', 'title', 'med_salary', 'formatted_wo
 
 
 #--------------------------------------------------
-# Q1: Salary Prediction: Q1: Given an industry, skill_abr, location, make a prediction on the salaray
-
+# Q1: Salary Prediction
 
 # Prepare the Data
 # Assuming df is your DataFrame containing relevant features and target variable (salary)
@@ -41,8 +40,7 @@ mae = mean_absolute_error(y_test, y_pred)
 print("Mean Absolute Error:", mae)
 #--------------------------------------------------
 
-# Q2: Remote Work Prediction: Which industry is most likely to offer remote work?
-
+# Q2: Remote Work Prediction
 
 # Prepare the Data
 # Assuming df_remote is your DataFrame containing relevant features and target variable (remote_allowed)
@@ -61,9 +59,7 @@ print("Feature Importance:", feature_importance)
 
 #--------------------------------------------------
 
-# Q3: Probability of Remote Work for a Given Company: 
-# Is a given company likely to provide remote working (what is the probability of this)?
-
+# Q3: Probability of Remote Work for a Given Company
 
 # Prepare the Data
 # Assuming df_company is your DataFrame containing relevant features for the given company

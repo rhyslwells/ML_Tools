@@ -40,19 +40,16 @@ for feature in features_interest:
 
 # Standardize features
 scaler = StandardScaler()
-scaled = scaler.fit_transform(df_company_data)
+df_company_data = scaler.fit_transform(df_company_data)
 
 # Apply KMeans clustering
 k = 5  # Choose the number of clusters
 kmeans = KMeans(n_clusters=k, random_state=42)
-kmeans.fit(scaled)
+kmeans.fit(df_company_data)
 
 # Find similar companies to a given company
 # Assume 'given_company_id' is the company for which we want to find similar companies
-given_company_id = 92699700     # Example company ID
-df_company_data.head()
-df_company_data[df_company_data['company_id'] == given_company_id].head()
-
+given_company_id = 92699700      # Example company ID
 given_company_cluster = kmeans.predict(df_company_data[df_company_data['company_id'] == given_company_id])
 
 # Get companies in the same cluster as the given company
@@ -66,7 +63,7 @@ similar_companies_indices = similar_companies_indices[similar_companies_indices 
 
 # Output the list of top 5 similar companies
 top_5_similar_companies = df.loc[similar_companies_indices].head(5)
-top_5_similar_companies
+print(top_5_similar_companies)
 
 #---------------------------------------------------
 

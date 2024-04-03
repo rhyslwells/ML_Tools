@@ -9,7 +9,6 @@ import pandas as pd
 #    - Create new features where necessary, such as `posting_effectiveness` based on the number of applies.
 
 
-
 # Load data
 df = pd.read_csv('job_postings.csv')
 
@@ -194,9 +193,6 @@ df.drop(features_to_drop, axis=1, inplace=True)
 #---------------------------------------------------------------
 
 # cleaning numerical features
-
-#TODO! outliers need to be pruned from numericals
-
 
 # df_num=df[numerical_feats]
 # df_num.columns
