@@ -46,6 +46,8 @@ for k,v in grid_search.best_params_.items():
 # Get the best estimator
 best_model = grid_search.best_estimator_
 
+
+
 # Evaluate the best model
 best_model.fit(X_train, y_train)
 accuracy = best_model.score(X_test, y_test)
