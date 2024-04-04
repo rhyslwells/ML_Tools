@@ -25,9 +25,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Hyperparameter tuning using GridSearchCV
 param_grid = {
-    'n_estimators': [5, 10,20],
-    'max_depth': [None],
-    'min_samples_split': [2,3,4,8,10],
+    'n_estimators': [5, 10],
+    'max_depth': [None, 2,4],
+    'min_samples_split': [2,3,4],
     'min_samples_leaf': [1, 2, 4]
 }
 
@@ -36,8 +36,6 @@ grid_search = GridSearchCV(estimator=rf_regressor, param_grid=param_grid, cv=5, 
 grid_search.fit(X_train, y_train)
 best_params = grid_search.best_params_
 print("Best Hyperparameters:", best_params)
-#Best Hyperparameters: {'max_depth': None, 'min_samples_leaf': 4, 'min_samples_split': 2, 'n_estimators': 10}
-# Best Hyperparameters: {'max_depth': None, 'min_samples_leaf': 1, 'min_samples_split': 10, 'n_estimators': 20}
 
 # Model Training with best hyperparameters
 rf_regressor = RandomForestRegressor(**best_params, random_state=42)
@@ -57,8 +55,3 @@ print("Mean Absolute Error:", mae)
 print("Mean Squared Error:", mse)
 print("Root Mean Squared Error:", rmse)
 print("R-squared:", r2)
-
-# Mean Absolute Error: 24285.73829163235
-# Mean Squared Error: 1807449901.39001
-# Root Mean Squared Error: 42514.114143305516
-# R-squared: 0.34117177937375653
