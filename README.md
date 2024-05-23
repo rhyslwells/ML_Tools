@@ -1,1 +1,1 @@
-A series of notebooks I use for learning. For personal use only.
+A series of notebooks I use for learning machine learning concepts. For personal use only.
