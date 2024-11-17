@@ -161,7 +161,7 @@ print("\n Pruned Base Model Performance with Selected Features and Best ccp_alph
 evaluate_model_cv(pruned_interpretable_model, X_train_rfe, y_train)
 visualize_tree(pruned_interpretable_model, selected_features)
 
-# # Step 5: Extract Decision Rules from Pruned Model
-# decision_rules = export_text(pruned_interpretable_model, feature_names=selected_features)
-# print("\n Decision Rules from Pruned Model:")
-# print(decision_rules)
+# Step 5: Extract Decision Rules from Pruned Model
+decision_rules = export_text(pruned_interpretable_model, feature_names=selected_features)
+print("\n Decision Rules from Pruned Model:")
+print(decision_rules)

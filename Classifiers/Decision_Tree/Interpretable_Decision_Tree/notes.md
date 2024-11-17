@@ -1,0 +1,42 @@
+'''
+Comment that can be made before discussing feature selection:
+
+When to Perform Feature Selection
+Before Pruning:
+
+If the goal is to simplify the input space early on, feature selection can help identify the most critical features for training the model.
+Performing feature selection using the best model ensures the full complexity of the decision tree is leveraged to determine feature importance, making it more likely to capture nuances in the data.
+This approach reduces the risk of overfitting by starting with fewer features and then applying pruning for further simplification.
+After Pruning:
+
+If the goal is interpretability, starting with a pruned model ensures the feature selection process aligns with a simplified model.
+Using the pruned model for feature selection prioritizes simplicity over performance, as pruning already eliminates unnecessary branches based on complexity considerations.
+
+The question of whether to perform feature selection before or after pruning depends on your objective. Since your goal is to create an interpretable model, here's a detailed breakdown of the considerations:
+
+When to Perform Feature Selection
+Before Pruning:
+
+If the goal is to simplify the input space early on, feature selection can help identify the most critical features for training the model.
+Performing feature selection using the best model ensures the full complexity of the decision tree is leveraged to determine feature importance, making it more likely to capture nuances in the data.
+This approach reduces the risk of overfitting by starting with fewer features and then applying pruning for further simplification.
+After Pruning:
+
+If the goal is interpretability, starting with a pruned model ensures the feature selection process aligns with a simplified model.
+Using the pruned model for feature selection prioritizes simplicity over performance, as pruning already eliminates unnecessary branches based on complexity considerations.
+Suggested Workflow for Interpretability
+Since interpretability is your priority, you should perform feature selection after pruning. Here's why:
+
+A pruned model is already simplified, so it reflects the critical features that contribute meaningfully to predictions without overfitting.
+Performing feature selection on the pruned model ensures alignment with your goal of creating a simpler and interpretable model.
+
+'''
+
+
+This approach ensures that the pruning process is both automated and metric-driven, making it more robust and generalizable. Let me know if you need further clarification or customization!
+
+
+
+
+
+

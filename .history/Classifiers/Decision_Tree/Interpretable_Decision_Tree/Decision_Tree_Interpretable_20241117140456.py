@@ -9,7 +9,6 @@ from sklearn.metrics import (
 import matplotlib.pyplot as plt
 from sklearn.feature_selection import RFE
 from sklearn.model_selection import cross_val_score
-import numpy as np
 
 # Load Titanic dataset
 df = pd.read_csv("../data/titanic.csv")
@@ -57,52 +56,10 @@ def visualize_tree(model, features):
     plt.show()
 
 # Step 2: Feature Selection using RFE
-# Step 2: Feature Selection using RFE
-
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.feature_selection import RFE
-from sklearn.metrics import accuracy_score
-from sklearn.tree import DecisionTreeClassifier
-
-# Initialize variables
-num_features = range(1, len(features) + 1)
-performance_scores = []
-
-# Iterate over different numbers of features
-for n in num_features:
-    # Apply Recursive Feature Elimination (RFE) with 'n' features
-    rfe = RFE(estimator=best_model, n_features_to_select=n)
-    rfe.fit(X_train, y_train)
-    
-    # Transform the training and testing datasets
-    X_train_rfe = rfe.transform(X_train)
-    X_test_rfe = rfe.transform(X_test)
-    
-    # Train and evaluate a model with the selected features
-    model = DecisionTreeClassifier(random_state=42)
-    model.fit(X_train_rfe, y_train)
-    y_pred = model.predict(X_test_rfe)
-    
-    # Compute and store the performance score (e.g., accuracy)
-    performance_scores.append(accuracy_score(y_test, y_pred))
-
-# Plot performance scores vs. the number of features
-plt.figure(figsize=(8, 6))
-plt.plot(num_features, performance_scores, marker='o', linestyle='-', color='b')
-plt.xlabel("Number of Features", fontsize=12)
-plt.ylabel("Accuracy", fontsize=12)
-plt.title("Model Performance vs. Number of Features", fontsize=14)
-plt.grid(True)
-plt.show()
-
-optimal_num_features=3
-
-# Apply RFE with the optimal number of features
-rfe = RFE(estimator=best_model, n_features_to_select=optimal_num_features)
+rfe = RFE(estimator=best_model, n_features_to_select=2, step=1)
 rfe.fit(X_train, y_train)
 
-# Extract and display the selected features
+# Get the selected features
 selected_features = [features[i] for i in range(len(features)) if rfe.support_[i]]
 print("Selected Features from RFE:", selected_features)
 
@@ -143,10 +100,7 @@ for alpha in ccp_alphas:
 
 # Find the `ccp_alpha` with the highest mean score
 alpha_scores = pd.DataFrame(alpha_scores, columns=['ccp_alpha', 'mean_score', 'std_dev'])
-print(alpha_scores)
-# best_alpha_row = alpha_scores.loc[alpha_scores['mean_score'].idxmax()]
-# select second row
-best_alpha_row = alpha_scores.iloc[5]
+best_alpha_row = alpha_scores.loc[alpha_scores['mean_score'].idxmax()]
 best_alpha = best_alpha_row['ccp_alpha']
 
 print(f"Best ccp_alpha: {best_alpha} with mean accuracy: {best_alpha_row['mean_score']:.4f}")
@@ -157,11 +111,10 @@ pruned_interpretable_model = DecisionTreeClassifier(**pruned_params)
 pruned_interpretable_model.fit(X_train_rfe, y_train)
 
 # Evaluate the pruned model
-print("\n Pruned Base Model Performance with Selected Features and Best ccp_alpha:")
+print("Pruned Model Performance with Selected ccp_alpha:")
 evaluate_model_cv(pruned_interpretable_model, X_train_rfe, y_train)
-visualize_tree(pruned_interpretable_model, selected_features)
 
-# # Step 5: Extract Decision Rules from Pruned Model
-# decision_rules = export_text(pruned_interpretable_model, feature_names=selected_features)
-# print("\n Decision Rules from Pruned Model:")
-# print(decision_rules)
+# Step 5: Extract Decision Rules from Pruned Model
+decision_rules = export_text(pruned_interpretable_model, feature_names=selected_features)
+print("Decision Rules from Pruned Model:")
+print(decision_rules)

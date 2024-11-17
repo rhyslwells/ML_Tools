@@ -87,6 +87,10 @@ for n in num_features:
     # Compute and store the performance score (e.g., accuracy)
     performance_scores.append(accuracy_score(y_test, y_pred))
 
+# Determine the optimal number of features
+optimal_num_features = num_features[np.argmax(performance_scores)]
+print(f"Optimal number of features: {optimal_num_features}")
+
 # Plot performance scores vs. the number of features
 plt.figure(figsize=(8, 6))
 plt.plot(num_features, performance_scores, marker='o', linestyle='-', color='b')
@@ -95,8 +99,6 @@ plt.ylabel("Accuracy", fontsize=12)
 plt.title("Model Performance vs. Number of Features", fontsize=14)
 plt.grid(True)
 plt.show()
-
-optimal_num_features=3
 
 # Apply RFE with the optimal number of features
 rfe = RFE(estimator=best_model, n_features_to_select=optimal_num_features)
@@ -143,10 +145,7 @@ for alpha in ccp_alphas:
 
 # Find the `ccp_alpha` with the highest mean score
 alpha_scores = pd.DataFrame(alpha_scores, columns=['ccp_alpha', 'mean_score', 'std_dev'])
-print(alpha_scores)
-# best_alpha_row = alpha_scores.loc[alpha_scores['mean_score'].idxmax()]
-# select second row
-best_alpha_row = alpha_scores.iloc[5]
+best_alpha_row = alpha_scores.loc[alpha_scores['mean_score'].idxmax()]
 best_alpha = best_alpha_row['ccp_alpha']
 
 print(f"Best ccp_alpha: {best_alpha} with mean accuracy: {best_alpha_row['mean_score']:.4f}")
@@ -157,11 +156,10 @@ pruned_interpretable_model = DecisionTreeClassifier(**pruned_params)
 pruned_interpretable_model.fit(X_train_rfe, y_train)
 
 # Evaluate the pruned model
-print("\n Pruned Base Model Performance with Selected Features and Best ccp_alpha:")
+print("Pruned Base Model Performance with Selected Features and Best ccp_alpha:")
 evaluate_model_cv(pruned_interpretable_model, X_train_rfe, y_train)
-visualize_tree(pruned_interpretable_model, selected_features)
 
-# # Step 5: Extract Decision Rules from Pruned Model
-# decision_rules = export_text(pruned_interpretable_model, feature_names=selected_features)
-# print("\n Decision Rules from Pruned Model:")
-# print(decision_rules)
+# Step 5: Extract Decision Rules from Pruned Model
+decision_rules = export_text(pruned_interpretable_model, feature_names=selected_features)
+print("Decision Rules from Pruned Model:")
+print(decision_rules)
