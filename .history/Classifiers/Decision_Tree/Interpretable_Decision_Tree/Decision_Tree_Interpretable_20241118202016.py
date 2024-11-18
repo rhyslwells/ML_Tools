@@ -52,12 +52,10 @@ def evaluate_model_cv(model, X, y, scoring='accuracy', cv=5):
         scores = cross_val_score(model, X, y, cv=cv, scoring=metric)
         print(f"Mean {metric}: {scores.mean():.4f} (Std: {scores.std():.4f})")
 
-
-evaluate_model_cv(best_model, X, y)
 # Visualise tree
 
 def visualize_tree(model, features):    
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(12, 8))
     plot_tree(model, filled=True, feature_names=features, class_names=["Not Survived", "Survived"], rounded=True)
     plt.show()
 

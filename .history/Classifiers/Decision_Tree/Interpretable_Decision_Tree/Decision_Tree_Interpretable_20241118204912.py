@@ -58,7 +58,7 @@ evaluate_model_cv(best_model, X, y)
 
 def visualize_tree(model, features):    
     plt.figure(figsize=(10, 8))
-    plot_tree(model, filled=True, feature_names=features, class_names=["Not Survived", "Survived"], rounded=True)
+    plot_tree(model, feature_names=features, class_names=["Not Survived", "Survived"], rounded=True)
     plt.show()
 
 
