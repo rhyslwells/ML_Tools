@@ -1,0 +1,29 @@
+  159  # List files and directories with details
+  160  ls -lh
+  161  # Show the current working directory
+  162  pwd
+  163  # Navigate into a directory
+  164  cd /path/to/your/directory
+  165  # Go back to the previous directory
+  166  cd -
+  167  cls
+  168  ls -lh
+  169  cd /path/to/your/directory
+  170  file filename.txt
+  171  ls
+  172  file README.md 
+  173  head -n 5 README.md
+  174  head -n  README.md
+  175  pwd
+  176  nano hello.sh
+  177  cd 0_Exploration/
+  178  chmod +x hello.sh
+  179  ./hello.sh
+  180  ./hello.sh 
+  181  top
+  182  clear
+  183  ls
+  184  clear
+  185  cd Bash/
+  186  history -w
+  187  history > my_session_history.txt
