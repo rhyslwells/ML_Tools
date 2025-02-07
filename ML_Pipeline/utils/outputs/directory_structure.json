@@ -1,0 +1,418 @@
+{
+    "experiments": {
+        "test_different_datasets.py": {
+            "functions": [],
+            "classes": [],
+            "imports": [
+                "pandas",
+                "scripts.dataset",
+                "preprocessing",
+                "models",
+                "evaluation",
+                "utils"
+            ],
+            "variables": [
+                "datasets",
+                "dataset",
+                "df",
+                "preprocessor",
+                "X_train",
+                "X_test",
+                "models",
+                "evaluator",
+                "model",
+                "y_pred",
+                "acc"
+            ]
+        }
+    },
+    "scripts": {
+        "config.py": {
+            "functions": [],
+            "classes": [
+                {
+                    "name": "Config",
+                    "docstring": null
+                }
+            ],
+            "imports": [],
+            "variables": [
+                "RANDOM_STATE",
+                "TEST_SIZE",
+                "MISSING_VALUE_STRATEGY",
+                "MODELS"
+            ]
+        },
+        "dataset.py": {
+            "functions": [
+                {
+                    "name": "__init__",
+                    "args": [
+                        "self",
+                        "file_path"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "load_data",
+                    "args": [
+                        "self"
+                    ],
+                    "docstring": "Loads dataset from CSV.",
+                    "decorators": []
+                },
+                {
+                    "name": "split",
+                    "args": [
+                        "self",
+                        "target_column"
+                    ],
+                    "docstring": "Splits data into train and test sets.",
+                    "decorators": []
+                }
+            ],
+            "classes": [
+                {
+                    "name": "Dataset",
+                    "docstring": null
+                }
+            ],
+            "imports": [
+                "pandas",
+                "sklearn.model_selection",
+                "config"
+            ],
+            "variables": [
+                "X",
+                "y"
+            ]
+        },
+        "evaluation.py": {
+            "functions": [
+                {
+                    "name": "__init__",
+                    "args": [
+                        "self"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "evaluate",
+                    "args": [
+                        "self",
+                        "model_name",
+                        "y_test",
+                        "y_pred"
+                    ],
+                    "docstring": "Evaluates the model and stores accuracy.",
+                    "decorators": []
+                },
+                {
+                    "name": "best_model",
+                    "args": [
+                        "self"
+                    ],
+                    "docstring": "Returns the best performing model.",
+                    "decorators": []
+                }
+            ],
+            "classes": [
+                {
+                    "name": "ModelEvaluator",
+                    "docstring": null
+                }
+            ],
+            "imports": [
+                "sklearn.metrics"
+            ],
+            "variables": [
+                "accuracy"
+            ]
+        },
+        "main.py": {
+            "functions": [],
+            "classes": [],
+            "imports": [
+                "dataset",
+                "preprocessing",
+                "models",
+                "evaluation",
+                "utils"
+            ],
+            "variables": [
+                "dataset",
+                "df",
+                "preprocessor",
+                "X_train",
+                "X_test",
+                "models",
+                "evaluator",
+                "model",
+                "y_pred",
+                "acc"
+            ]
+        },
+        "models.py": {
+            "functions": [
+                {
+                    "name": "__init__",
+                    "args": [
+                        "self",
+                        "model_type"
+                    ],
+                    "docstring": "Initializes a machine learning model based on the selected type.",
+                    "decorators": []
+                },
+                {
+                    "name": "train",
+                    "args": [
+                        "self",
+                        "X_train",
+                        "y_train"
+                    ],
+                    "docstring": "Trains the selected model.",
+                    "decorators": []
+                },
+                {
+                    "name": "predict",
+                    "args": [
+                        "self",
+                        "X_test"
+                    ],
+                    "docstring": "Makes predictions on new data.",
+                    "decorators": []
+                }
+            ],
+            "classes": [
+                {
+                    "name": "ModelFactory",
+                    "docstring": null
+                }
+            ],
+            "imports": [
+                "sklearn.ensemble",
+                "sklearn.linear_model",
+                "config"
+            ],
+            "variables": []
+        },
+        "preprocessing.py": {
+            "functions": [
+                {
+                    "name": "__init__",
+                    "args": [
+                        "self"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "handle_missing_values",
+                    "args": [
+                        "self",
+                        "df"
+                    ],
+                    "docstring": "Handles missing values using configured strategy.",
+                    "decorators": []
+                },
+                {
+                    "name": "scale_features",
+                    "args": [
+                        "self",
+                        "X_train",
+                        "X_test"
+                    ],
+                    "docstring": "Scales features using StandardScaler.",
+                    "decorators": []
+                }
+            ],
+            "classes": [
+                {
+                    "name": "Preprocessor",
+                    "docstring": null
+                }
+            ],
+            "imports": [
+                "sklearn.preprocessing",
+                "pandas",
+                "config"
+            ],
+            "variables": [
+                "X_train_scaled",
+                "X_test_scaled"
+            ]
+        },
+        "utils.py": {
+            "functions": [
+                {
+                    "name": "log_message",
+                    "args": [
+                        "message"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "logging"
+            ],
+            "variables": []
+        }
+    },
+    "tests": {
+        "test_dataset.py": {
+            "functions": [
+                {
+                    "name": "sample_data",
+                    "args": [
+                        "tmp_path"
+                    ],
+                    "docstring": "Creates a temporary dataset for testing.",
+                    "decorators": []
+                },
+                {
+                    "name": "test_load_data",
+                    "args": [
+                        "sample_data"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "test_train_test_split",
+                    "args": [
+                        "sample_data"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "pytest",
+                "pandas",
+                "dataset"
+            ],
+            "variables": [
+                "file",
+                "df",
+                "dataset",
+                "df",
+                "dataset"
+            ]
+        },
+        "test_evaluation.py": {
+            "functions": [
+                {
+                    "name": "test_evaluate",
+                    "args": [],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "test_best_model",
+                    "args": [],
+                    "docstring": null,
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "pytest",
+                "evaluation"
+            ],
+            "variables": [
+                "evaluator",
+                "y_test",
+                "y_pred",
+                "accuracy",
+                "evaluator"
+            ]
+        },
+        "test_models.py": {
+            "functions": [
+                {
+                    "name": "test_create_models",
+                    "args": [],
+                    "docstring": "Ensure models are initialized correctly.",
+                    "decorators": []
+                },
+                {
+                    "name": "test_model_training",
+                    "args": [],
+                    "docstring": "Ensure models train without errors.",
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "pytest",
+                "models"
+            ],
+            "variables": [
+                "model_logistic",
+                "model_rf",
+                "model",
+                "X_train",
+                "y_train"
+            ]
+        },
+        "test_preprocessing.py": {
+            "functions": [
+                {
+                    "name": "sample_data",
+                    "args": [],
+                    "docstring": "Creates a sample dataframe with missing values.",
+                    "decorators": []
+                },
+                {
+                    "name": "test_handle_missing_values",
+                    "args": [
+                        "sample_data"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "test_scale_features",
+                    "args": [],
+                    "docstring": null,
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "pytest",
+                "pandas",
+                "preprocessing"
+            ],
+            "variables": [
+                "preprocessor",
+                "df_cleaned",
+                "preprocessor",
+                "X_train",
+                "X_test"
+            ]
+        },
+        "test_utils.py": {
+            "functions": [
+                {
+                    "name": "test_log_message",
+                    "args": [
+                        "caplog"
+                    ],
+                    "docstring": "Ensure logging outputs correct message.",
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "utils"
+            ],
+            "variables": []
+        }
+    }
+}
