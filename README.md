@@ -2,7 +2,7 @@
 
 This personal repository contains a series of structured explorations aimed at implementing and understanding various machine learning concepts. The primary objective is to develop a **flexible and modular pipeline** for testing ideas and techniques. Insights from these explorations are integrated into the pipeline where applicable.  
 
-This project is closely linked to the [Data Archive](https://github.com/rhyslwells/Data-Archive), which provides additional datasets, context, and supporting resources.  
+This project is closely linked to the [Data Archive](https://rhyslwells.github.io/Data-Archive/), which provides additional datasets, context, and supporting resources.  
 
 ## Repository Structure  
 
