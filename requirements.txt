@@ -49,6 +49,7 @@ pywin32==308
 pyzmq==26.2.1
 referencing==0.36.2
 rpds-py==0.23.1
+ruptures==1.1.9
 scikit-learn==1.6.1
 scipy==1.15.1
 seaborn==0.13.2
