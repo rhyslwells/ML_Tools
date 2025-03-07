@@ -127,7 +127,7 @@ def fcast_evaluation(predicted, actual):
 # 
 
 
-raw_data = pd.read_csv('../../Datasets\NAB-TimeSeries-Data\artificialNoAnomaly\art_daily_no_noise.csv', index_col=0)
+raw_data = pd.read_csv('../../data/msft_cleaned.csv', index_col=0)
 
 
 raw_data.index = pd.to_datetime(raw_data.index)
