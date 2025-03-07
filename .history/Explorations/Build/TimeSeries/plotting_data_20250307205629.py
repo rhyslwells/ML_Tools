@@ -17,6 +17,21 @@ from sklearn.model_selection import TimeSeriesSplit
 
 # Load Data
 raw_data = pd.read_csv('../../../Datasets/NAB-TimeSeries-Data/artificialNoAnomaly/art_daily_no_noise.csv')
+#no anomalys
+Datasets\NAB-TimeSeries-Data\artificialNoAnomaly\art_daily_perfect_square_wave.csv
+Datasets\NAB-TimeSeries-Data\artificialNoAnomaly\art_daily_small_noise.csv
+Datasets\NAB-TimeSeries-Data\artificialNoAnomaly\art_flatline.csv
+Datasets\NAB-TimeSeries-Data\artificialNoAnomaly\art_noisy.csv
+# with anomalys
+Datasets\NAB-TimeSeries-Data\artificialWithAnomaly\art_daily_flatmiddle.csv
+Datasets\NAB-TimeSeries-Data\artificialWithAnomaly\art_daily_jumpsdown.csv
+Datasets\NAB-TimeSeries-Data\artificialWithAnomaly\art_daily_jumpsup.csv
+Datasets\NAB-TimeSeries-Data\artificialWithAnomaly\art_daily_nojump.csv
+Datasets\NAB-TimeSeries-Data\artificialWithAnomaly\art_increase_spike_density.csv
+Datasets\NAB-TimeSeries-Data\artificialWithAnomaly\art_load_balancer_spikes.csv
+
+
+
 raw_data['timestamp'] = pd.to_datetime(raw_data['timestamp'])
 raw_data.set_index('timestamp', inplace=True)
 
