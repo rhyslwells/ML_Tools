@@ -8,7 +8,6 @@ from scipy.special import inv_boxcox
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import yfinance as yf
 import warnings
-import optuna  # Import Optuna
 
 warnings.simplefilter("ignore", category=UserWarning)
 
@@ -100,64 +99,79 @@ plot_acf_pacf(raw_data['Close_boxcox'])
 train_size = int(len(raw_data) * 0.8)
 train_df, test_df = raw_data[:train_size], raw_data[train_size:]
 
-# ARIMA Objective Function for Optuna
-def objective_arima(trial):
-    p = trial.suggest_int('p', 0, 2)
-    d = trial.suggest_int('d', 0, 2)
-    q = trial.suggest_int('q', 0, 2)
-    
-    model = sm.tsa.ARIMA(train_df['Close_boxcox'], order=(p, d, q))
-    model_fitted = model.fit()
-    
-    # Forecast and evaluate
-    forecast = inv_boxcox(model_fitted.forecast(len(test_df)), lam)
-    mse, mae, rmse, mape = fcast_evaluation(forecast, test_df['value'].values)
-    
-    return mse  # Optuna minimizes the objective, so return MSE
+# Function to perform Grid Search for ARIMA parameters
+def grid_search_arima(y, p_values, d_values, q_values):
+    best_aic = float('inf')
+    best_params = None
+    best_model = None
 
-# Optimize ARIMA parameters using Optuna
-study_arima = optuna.create_study(direction='minimize')
-study_arima.optimize(objective_arima, n_trials=30)
+    for p in p_values:
+        for d in d_values:
+            for q in q_values:
+                try:
+                    model = sm.tsa.ARIMA(y, order=(p, d, q))
+                    model_fitted = model.fit()
+                    if model_fitted.aic < best_aic:
+                        best_aic = model_fitted.aic
+                        best_params = (p, d, q)
+                        best_model = model_fitted
+                except:
+                    continue
+    return best_model, best_params
 
-best_arima_params = study_arima.best_params
-print("Best ARIMA Parameters:", best_arima_params)
+# Grid search for ARIMA parameters
+p_values = range(0, 3)
+d_values = range(0, 2)
+q_values = range(0, 3)
 
-# SARIMA Objective Function for Optuna
-def objective_sarima(trial):
-    p = trial.suggest_int('p', 0, 1)
-    d = trial.suggest_int('d', 0, 1)
-    q = trial.suggest_int('q', 0, 1)
-    P = trial.suggest_int('P', 0, 1)
-    D = trial.suggest_int('D', 0, 1)
-    Q = trial.suggest_int('Q', 0, 1)
-    s = trial.suggest_int('s', 12, 12)  # Seasonal period is fixed to 12 (monthly data)
-    
-    model = sm.tsa.SARIMAX(train_df['Close_boxcox'], order=(p, d, q), seasonal_order=(P, D, Q, s))
-    model_fitted = model.fit()
-    
-    # Forecast and evaluate
-    forecast = inv_boxcox(model_fitted.forecast(len(test_df)), lam)
-    mse, mae, rmse, mape = fcast_evaluation(forecast, test_df['value'].values)
-    
-    return mse  # Optuna minimizes the objective, so return MSE
-
-# Optimize SARIMA parameters using Optuna
-study_sarima = optuna.create_study(direction='minimize')
-study_sarima.optimize(objective_sarima, n_trials=30)
-
-best_sarima_params = study_sarima.best_params
-print("Best SARIMA Parameters:", best_sarima_params)
-
-# Make predictions using the best SARIMA model
-sarima_model = sm.tsa.SARIMAX(train_df['Close_boxcox'], order=(best_sarima_params['p'], best_sarima_params['d'], best_sarima_params['q']),
-                              seasonal_order=(best_sarima_params['P'], best_sarima_params['D'], best_sarima_params['Q'], best_sarima_params['s']))
-sarima_fitted = sarima_model.fit()
-pred_y_sarima = inv_boxcox(sarima_fitted.forecast(len(test_df)), lam)
+y = train_df['Close_boxcox']
+best_arima_model, best_arima_params = grid_search_arima(y, p_values, d_values, q_values)
 
 # Make predictions using the best ARIMA model
-arima_model = sm.tsa.ARIMA(train_df['Close_boxcox'], order=(best_arima_params['p'], best_arima_params['d'], best_arima_params['q']))
-arima_fitted = arima_model.fit()
-pred_y_arima = inv_boxcox(arima_fitted.forecast(len(test_df)), lam)
+pred_y_arima = inv_boxcox(best_arima_model.forecast(len(test_df)), lam)
+
+def grid_search_sarima_reduced(y, p_values, d_values, q_values, P_values, D_values, Q_values, seasonal_periods):
+    best_aic = float('inf')
+    best_params = None
+    best_model = None
+
+    for p in p_values:
+        for d in d_values:
+            for q in q_values:
+                for P in P_values:
+                    for D in D_values:
+                        for Q in Q_values:
+                            for s in seasonal_periods:
+                                try:
+                                    model = sm.tsa.SARIMAX(y, order=(p, d, q), seasonal_order=(P, D, Q, s))
+                                    model_fitted = model.fit()
+                                    if model_fitted.aic < best_aic:
+                                        best_aic = model_fitted.aic
+                                        best_params = (p, d, q, P, D, Q, s)
+                                        best_model = model_fitted
+                                except:
+                                    continue
+    return best_model, best_params
+
+# Reduced parameter ranges
+p_values = range(0, 2)  # Testing only 0 and 1 for non-seasonal autoregressive terms
+d_values = range(0, 2)  # Testing only 0 and 1 for differencing
+q_values = range(0, 2)  # Testing only 0 and 1 for non-seasonal moving average terms
+
+P_values = range(0, 2)  # Testing only 0 and 1 for seasonal autoregressive terms
+D_values = range(0, 2)  # Testing only 0 and 1 for seasonal differencing
+Q_values = range(0, 2)  # Testing only 0 and 1 for seasonal moving average terms
+
+seasonal_periods = [12]  # Assuming monthly data, seasonality could be yearly (12 months)
+
+best_sarima_model, best_sarima_params = grid_search_sarima_reduced(y, p_values, d_values, q_values, P_values, D_values, Q_values, seasonal_periods)
+
+print("Best SARIMA parameters:", best_sarima_params)
+
+
+
+# Make predictions using the best SARIMA model
+pred_y_sarima = inv_boxcox(best_sarima_model.forecast(len(test_df)), lam)
 
 # Plot both ARIMA and SARIMA forecasts
 plt_forecast(pred_y_arima, pred_y_sarima, fc_method_arima='ARIMA', fc_method_sarima='SARIMA', train=train_df, test=test_df)
@@ -166,5 +180,7 @@ plt_forecast(pred_y_arima, pred_y_sarima, fc_method_arima='ARIMA', fc_method_sar
 arima_metrics = fcast_evaluation(pred_y_arima, test_df['value'].values)
 sarima_metrics = fcast_evaluation(pred_y_sarima, test_df['value'].values)
 
+print("Best ARIMA parameters:", best_arima_params)
+print("Best SARIMA parameters:", best_sarima_params)
 print("ARIMA Evaluation:", arima_metrics)
 print("SARIMA Evaluation:", sarima_metrics)
