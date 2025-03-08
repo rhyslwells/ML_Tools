@@ -64,6 +64,8 @@ def plot_qq(df, col):
         elif observed[-1] < expected[-1]:
             print("The data is left-skewed. Points curve below the diagonal on the right (upper quantiles).")
 
+
+
 def plot_distributions(df, col=None):
     """Plot distributions for numerical and categorical columns."""
     if col is not None:
