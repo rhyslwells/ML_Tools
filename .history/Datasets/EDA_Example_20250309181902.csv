@@ -1,0 +1,21 @@
+id,region,total_sales,gender,category,demand_tags,season,priority
+1,North,1200,Male,A,high,"['winter', 'spring']",high
+2,South,800,Female,B,low,"['summer']", 
+3,East,300,Male,A,medium,"['fall', 'winter']", 
+4,West,1000,Female,C,high,"['spring']",high
+5,South,,Male,B,low,"['summer']", 
+6,North,1500,Female,A,high,"['fall']",priority
+7,West,400,Male,B,medium,"['winter']", 
+8,East,950,Female,C,medium,"['spring', 'summer']", 
+9,South,1100,Male,A,high,"['fall']",high
+10,West,500,Female,B,low,"['summer']", 
+11,North,1750,Male,C,priority,"['winter']", 
+12,East,750,Female,A,medium,"['fall']",low
+13,South,450,Male,C,low,"['summer', 'spring']", 
+14,West,1200,Female,A,high,"['fall', 'winter']",high
+15,North,650,Male,B,medium,"['winter', 'spring']", 
+16,South,890,Female,C,low,"['summer', 'fall']", 
+17,East,1320,Male,A,high,"['spring']", 
+18,West,700,Female,B,medium,"['fall']", 
+19,North,1550,Male,C,priority,"['winter', 'summer']", 
+20,South,480,Female,A,low,"['spring']", 

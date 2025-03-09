@@ -20,43 +20,30 @@ def detect_outliers(df, column):
     return outliers, df_no_outliers
 
 
-
-
-# Function to unpack nested data (e.g., "summer,fall") in a column
+# General function to unpack nested data in a column
 def unpack_nested_data(df, column):
-    """Unpack nested data in a column (comma-separated strings) using explode."""
+    """Unpack nested data in a column (lists) using explode."""
     def safe_literal_eval(val):
-        """Safely convert strings to Python literals (e.g., lists)."""
+        """Safely convert strings to Python literals."""
         try:
-            # If the value is a string of comma-separated items, split into a list
-            return val.split(',') if isinstance(val, str) else val
+            return ast.literal_eval(val)
         except (ValueError, SyntaxError):
             return []  # Return an empty list if not valid
     
-    # Apply the function to split the values into lists if needed
     df[column] = df[column].apply(safe_literal_eval)
-    
-    # If the column contains lists, explode the column to separate rows
-    if df[column].apply(lambda x: isinstance(x, list)).all():
-        exploded_df = df.explode(column)
-    else:
-        exploded_df = df  # No explosion if data is not in list format
-    
+    exploded_df = df.explode(column)
     return exploded_df
 
-# Function to handle one-hot encoding for a column with multiple values (e.g., 'summer, fall')
+# General function to handle one-hot encoding for a column with multiple values (like seasons)
 def encode_column(df, column):
     """One-hot encode a column containing multiple values (e.g., 'summer, fall')."""
-    
-    # Create a set of all possible unique values in the column
+    # Create a set of all possible unique values in the column after exploding
     unique_values = set()
+    df[column].dropna().apply(lambda x: unique_values.update(x.split(',')))
     
-    # Handle both comma-separated strings and already exploded lists
-    df[column].dropna().apply(lambda x: unique_values.update(x.split(',') if isinstance(x, str) else x))
-    
-    # Create dummy columns for each unique value found
+    # Create dummy columns for each possible season
     for value in unique_values:
-        df[value] = df[column].apply(lambda x: 1 if value in (x.split(',') if isinstance(x, str) else x) else 0)
+        df[value] = df[column].apply(lambda x: 1 if value in x.split(',') else 0)
     
     # Drop the original column after encoding
     df = df.drop(column, axis=1)
@@ -65,19 +52,15 @@ def encode_column(df, column):
 # General preprocessing function
 def preprocess_data(df, columns_to_explode=None, columns_to_encode=None):
     """Preprocess the dataset with general steps."""
-    
-    # Step 1: Explode columns with nested data (lists)
     if columns_to_explode:
         for column in columns_to_explode:
             df = unpack_nested_data(df, column)
     
-    # Step 2: Apply encoding to any specified columns
     if columns_to_encode:
         for column in columns_to_encode:
             df = encode_column(df, column)
     
     return df
-
 
 # General function to fill missing values using group-based aggregation method
 def fill_missing_with_group_aggregation_method(df, target_column, group_by_column, agg_method='mean'):
@@ -127,15 +110,11 @@ def main():
     begin = "../.."
     path = '/Datasets/EDA_Example.csv'
     file_path = begin + path
-    df_unprocessed = load_data(file_path)
+    df = load_data(file_path)
 
     # Preprocessing: General steps before specific dataset preprocessing
     print("\nStarting General Preprocessing...")
-
-    # Preprocess data, including exploding and encoding columns like 'season'
-    df = preprocess_data(df_unprocessed, columns_to_explode=['season'], columns_to_encode=['season'])
-
-    print("\nDataset Preview:", df.head())
+    df = preprocess_data(df, columns_to_explode=['season'])
 
     # Dataset summary
     print("\nDataset Summary:")

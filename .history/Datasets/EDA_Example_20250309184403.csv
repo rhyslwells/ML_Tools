@@ -1,0 +1,79 @@
+id,region,total_sales,gender,category,demand_tags,season,priority
+1,West,,Female,C,low,['spring'],
+2,South,,Male,C,priority,"['summer', 'fall']",
+3,East,,Female,A,low,['winter'],
+4,North,1582.0,Male,B,priority,['spring'],high
+5,North,1682.0,Male,A,priority,"['winter', 'spring']",
+6,West,,Female,B,priority,"['summer', 'winter']",high
+7,West,645.0,Male,B,low,['spring'],
+8,East,,Male,A,priority,"['spring', 'summer']",low
+9,East,,Female,A,priority,['winter'],low
+10,North,,Male,C,high,"['summer', 'winter']",low
+11,South,,Male,A,low,['summer'],low
+12,South,,Male,B,medium,['spring'],high
+13,South,,Female,B,medium,['winter'],low
+14,South,,Female,A,priority,"['spring', 'winter']",low
+15,South,1806.0,Male,C,low,['fall'],low
+16,West,1218.0,Female,C,high,"['summer', 'winter']",high
+17,North,682.0,Male,C,priority,"['spring', 'summer']",high
+18,East,1260.0,Female,C,high,"['summer', 'winter']",low
+19,East,633.0,Female,C,low,"['fall', 'summer']",high
+20,East,,Male,B,low,"['spring', 'summer']",high
+21,South,,Female,C,low,"['fall', 'winter']",
+22,South,,Male,B,medium,['fall'],
+23,West,,Female,A,priority,"['fall', 'winter']",low
+24,West,421.0,Male,B,high,['summer'],high
+25,West,,Female,B,priority,"['summer', 'winter']",
+26,North,1198.0,Female,B,high,['winter'],
+27,East,1765.0,Male,B,low,"['spring', 'summer']",high
+28,South,,Male,A,high,['spring'],high
+29,South,,Female,A,medium,"['fall', 'winter']",
+30,East,816.0,Male,B,low,['spring'],high
+31,North,1996.0,Female,C,priority,['winter'],low
+32,South,741.0,Female,A,high,['summer'],
+33,North,,Male,C,high,['spring'],low
+34,West,1551.0,Male,C,medium,"['spring', 'winter']",low
+35,South,1816.0,Female,C,medium,['spring'],low
+36,North,1530.0,Male,B,low,['summer'],
+37,North,,Male,C,medium,['winter'],high
+38,West,,Male,C,low,['fall'],low
+39,North,822.0,Female,A,low,"['spring', 'fall']",low
+40,West,,Female,C,medium,['spring'],high
+41,North,,Female,A,medium,"['spring', 'winter']",low
+42,West,,Male,B,priority,"['summer', 'spring']",low
+43,South,1118.0,Male,B,high,"['spring', 'summer']",low
+44,South,,Female,C,low,['fall'],low
+45,East,,Male,A,priority,['fall'],low
+46,East,,Female,C,low,"['spring', 'winter']",low
+47,West,612.0,Female,B,high,"['fall', 'spring']",
+48,North,,Male,B,medium,['spring'],low
+49,South,1078.0,Male,C,priority,"['spring', 'summer']",high
+50,South,807.0,Female,C,low,"['fall', 'spring']",
+51,West,,Female,C,high,['fall'],high
+52,North,1271.0,Male,A,priority,"['spring', 'fall']",low
+53,East,1218.0,Female,C,priority,"['spring', 'fall']",high
+54,West,,Male,B,low,"['winter', 'spring']",
+55,West,314.0,Male,C,low,['spring'],high
+56,North,,Male,C,high,['fall'],low
+57,North,1795.0,Male,A,medium,"['winter', 'spring']",
+58,East,,Female,A,low,['fall'],
+59,South,1493.0,Male,C,priority,"['winter', 'fall']",
+60,North,1251.0,Female,A,medium,"['fall', 'summer']",low
+61,North,,Female,B,low,['spring'],high
+62,East,,Female,C,medium,"['summer', 'fall']",
+63,North,671.0,Male,B,high,"['winter', 'spring']",
+64,South,549.0,Male,B,high,"['summer', 'fall']",
+65,South,1047.0,Female,A,high,['fall'],low
+66,West,,Male,C,priority,['fall'],high
+67,East,,Male,A,high,"['spring', 'winter']",
+68,West,,Female,A,low,"['winter', 'fall']",
+69,West,675.0,Female,B,low,['fall'],low
+70,North,,Male,B,low,['spring'],high
+71,South,,Female,C,medium,"['summer', 'spring']",high
+72,West,,Male,A,high,['summer'],low
+73,East,,Male,B,priority,"['spring', 'fall']",high
+74,East,,Male,C,high,['fall'],high
+75,West,1293.0,Male,B,medium,"['spring', 'winter']",low
+76,South,438.0,Female,A,low,['winter'],high
+77,North,1114.0,Male,B,medium,['winter'],high
+78,West,498.0,Male,B,high,['spring'],high
