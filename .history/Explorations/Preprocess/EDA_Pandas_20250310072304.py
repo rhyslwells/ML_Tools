@@ -56,7 +56,7 @@ def preprocess_data(df, columns_to_explode=None, columns_to_encode=None):
 
     # Preprocessing: General steps before specific dataset preprocessing
     print("\nStarting General Preprocessing...")
-
+    
     # set id column as index
     df.set_index('id', inplace=True)
     
@@ -116,34 +116,8 @@ def get_missing_data_summary(df):
 # General function to fill missing values using group-based aggregation method
 def fill_missing_with_group_aggregation_method(df, target_column, group_by_column, agg_method='mean'):
     """Fill missing values in a target column with aggregated values (mean, sum, etc.) by group."""
-
-    print(f"\nFilling Missing Data of {target_column} with group aggregation using {agg_method} by {group_by_column}:")
-
-    if agg_method == 'most_frequent':
-        # Find the most frequent value for each group
-        agg_func = df.groupby(group_by_column)[target_column].apply(lambda x: x.mode().iloc[0] if not x.mode().empty else np.nan)
-        
-        # Print statements to show what is being done for each missing term
-        missing_indices = df[df[target_column].isnull()].index
-        for idx in missing_indices:
-            group_value = df.at[idx, group_by_column]
-            fill_value = agg_func.loc[group_value]
-            print(f"Filling missing value in row {idx} for column '{target_column}' with '{fill_value}' based on group '{group_value}'")
-        
-        df[target_column] = df.groupby(group_by_column)[target_column].transform(lambda x: x.fillna(x.mode().iloc[0] if not x.mode().empty else np.nan))
-    else:
-        # Group by the specified column and aggregate the target column
-        agg_func = df.groupby(group_by_column)[target_column].transform(agg_method)
-        
-        # Print statements to show what is being done for each missing term
-        missing_indices = df[df[target_column].isnull()].index
-        for idx in missing_indices:
-            group_value = df.at[idx, group_by_column]
-            fill_value = agg_func.loc[idx]
-            print(f"Filling missing value in row {idx} for column '{target_column}' with '{fill_value}' based on group '{group_value}'")
-        
-        df[target_column] = df[target_column].fillna(agg_func)
-
+    agg_func = getattr(df.groupby(group_by_column)[target_column], agg_method)()
+    df[target_column] = df[target_column].fillna(agg_func)
     return df
 
 # Summarize dataset information
@@ -162,26 +136,25 @@ def main():
     file_path = begin + path
     df_unprocessed = load_data(file_path)
 
+
+
     # Preprocess data, including exploding and encoding columns like 'season'
     df = preprocess_data(df_unprocessed, columns_to_explode=['season'], columns_to_encode=['season'])
 
-    # print("\nDataset Preview:", df.head())
+    print("\nDataset Preview:", df.head())
 
     # Dataset summary
     # print("\nDataset Summary:")
     # summarize_dataset(df,['region', 'gender', 'category', 'demand_tags','priority', 'summer', 'winter', 'spring', 'fall'])
 
     # Missing data summary
-    print("\nMissing Data Summary for columns with missing data:")
+    print("\nMissing Data Summary for columns with mising data:")
     get_missing_data_summary(df)
 
     # Fill missing data by group aggregation (mean)
+    #TODO
+    print("\nFilling Missing Data...")
     df = fill_missing_with_group_aggregation_method(df, 'total_sales', 'region', agg_method='mean')
-
-    # Fix: for categoricals i want to fill using the most frequent for that grouping
-    df = fill_missing_with_group_aggregation_method(df, 'demand_tags', 'region', agg_method='most_frequent')
-
-
     print("\nMissing Data Summary After Filling:")
     get_missing_data_summary(df)
 

@@ -7,6 +7,18 @@ def load_data(file_path):
     """Load a dataset from a CSV file."""
     return pd.read_csv(file_path)
 
+# Function to detect outliers using IQR method
+def detect_outliers(df, column):
+    """Detect outliers using Interquartile Range (IQR) method."""
+    Q1 = df[column].quantile(0.25)
+    Q3 = df[column].quantile(0.75)
+    IQR = Q3 - Q1
+
+    outliers = df[(df[column] < Q1 - 1 * IQR) | (df[column] > Q3 + 1.5 * IQR)]
+    df_no_outliers = df[~df.index.isin(outliers.index)]  # Exclude rows matching outliers
+
+    return outliers, df_no_outliers
+
 
 # Function to unpack nested data (e.g., "summer,fall") in a column
 
@@ -53,12 +65,6 @@ def encode_column(df, column):
 # General preprocessing function
 def preprocess_data(df, columns_to_explode=None, columns_to_encode=None):
     """Preprocess the dataset with general steps."""
-
-    # Preprocessing: General steps before specific dataset preprocessing
-    print("\nStarting General Preprocessing...")
-
-    # set id column as index
-    df.set_index('id', inplace=True)
     
     # Step 1: Explode columns with nested data (lists)
     if columns_to_explode:
@@ -73,20 +79,13 @@ def preprocess_data(df, columns_to_explode=None, columns_to_encode=None):
     return df
 
 
+# General function to fill missing values using group-based aggregation method
+def fill_missing_with_group_aggregation_method(df, target_column, group_by_column, agg_method='mean'):
+    """Fill missing values in a target column with aggregated values (mean, sum, etc.) by group."""
+    agg_func = getattr(df.groupby(group_by_column)[target_column], agg_method)()
+    df[target_column] = df[target_column].fillna(agg_func)
+    return df
 
-
-
-# Function to detect outliers using IQR method
-def detect_outliers(df, column):
-    """Detect outliers using Interquartile Range (IQR) method."""
-    Q1 = df[column].quantile(0.25)
-    Q3 = df[column].quantile(0.75)
-    IQR = Q3 - Q1
-
-    outliers = df[(df[column] < Q1 - 1 * IQR) | (df[column] > Q3 + 1.5 * IQR)]
-    df_no_outliers = df[~df.index.isin(outliers.index)]  # Exclude rows matching outliers
-
-    return outliers, df_no_outliers
 
 
 # Simplify aggregations using .agg()
@@ -113,46 +112,14 @@ def get_missing_data_summary(df):
             print(f"{col}: {null_count} ({round(percent, 3)}%)")
     return missing_percent
 
-# General function to fill missing values using group-based aggregation method
-def fill_missing_with_group_aggregation_method(df, target_column, group_by_column, agg_method='mean'):
-    """Fill missing values in a target column with aggregated values (mean, sum, etc.) by group."""
-
-    print(f"\nFilling Missing Data of {target_column} with group aggregation using {agg_method} by {group_by_column}:")
-
-    if agg_method == 'most_frequent':
-        # Find the most frequent value for each group
-        agg_func = df.groupby(group_by_column)[target_column].apply(lambda x: x.mode().iloc[0] if not x.mode().empty else np.nan)
-        
-        # Print statements to show what is being done for each missing term
-        missing_indices = df[df[target_column].isnull()].index
-        for idx in missing_indices:
-            group_value = df.at[idx, group_by_column]
-            fill_value = agg_func.loc[group_value]
-            print(f"Filling missing value in row {idx} for column '{target_column}' with '{fill_value}' based on group '{group_value}'")
-        
-        df[target_column] = df.groupby(group_by_column)[target_column].transform(lambda x: x.fillna(x.mode().iloc[0] if not x.mode().empty else np.nan))
-    else:
-        # Group by the specified column and aggregate the target column
-        agg_func = df.groupby(group_by_column)[target_column].transform(agg_method)
-        
-        # Print statements to show what is being done for each missing term
-        missing_indices = df[df[target_column].isnull()].index
-        for idx in missing_indices:
-            group_value = df.at[idx, group_by_column]
-            fill_value = agg_func.loc[idx]
-            print(f"Filling missing value in row {idx} for column '{target_column}' with '{fill_value}' based on group '{group_value}'")
-        
-        df[target_column] = df[target_column].fillna(agg_func)
-
-    return df
-
 # Summarize dataset information
-def summarize_dataset(df,col_list):
+def summarize_dataset(df):
     """Summarize dataset information."""
     print(df.info())  # Get the data types and non-null counts
-    for column in col_list:
-        print(f"\nValue counts for column '{column}':")
-        print(df[column].value_counts())
+    for column in df.columns:
+        if df[column].dtype == 'object' and not isinstance(df[column].iloc[0], list):  # Avoid list-type columns
+            print(f"\nValue counts for column '{column}':")
+            print(df[column].value_counts())
     return df.head()
 
 # Main function to manage the workflow
@@ -162,26 +129,25 @@ def main():
     file_path = begin + path
     df_unprocessed = load_data(file_path)
 
+    # Preprocessing: General steps before specific dataset preprocessing
+    print("\nStarting General Preprocessing...")
+
     # Preprocess data, including exploding and encoding columns like 'season'
     df = preprocess_data(df_unprocessed, columns_to_explode=['season'], columns_to_encode=['season'])
 
-    # print("\nDataset Preview:", df.head())
+    print("\nDataset Preview:", df.head())
 
     # Dataset summary
-    # print("\nDataset Summary:")
-    # summarize_dataset(df,['region', 'gender', 'category', 'demand_tags','priority', 'summer', 'winter', 'spring', 'fall'])
+    print("\nDataset Summary:")
+    summarize_dataset(df)
 
     # Missing data summary
-    print("\nMissing Data Summary for columns with missing data:")
+    print("\nMissing Data Summary:")
     get_missing_data_summary(df)
 
     # Fill missing data by group aggregation (mean)
+    print("\nFilling Missing Data...")
     df = fill_missing_with_group_aggregation_method(df, 'total_sales', 'region', agg_method='mean')
-
-    # Fix: for categoricals i want to fill using the most frequent for that grouping
-    df = fill_missing_with_group_aggregation_method(df, 'demand_tags', 'region', agg_method='most_frequent')
-
-
     print("\nMissing Data Summary After Filling:")
     get_missing_data_summary(df)
 

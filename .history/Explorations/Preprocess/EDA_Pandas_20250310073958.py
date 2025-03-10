@@ -127,7 +127,7 @@ def fill_missing_with_group_aggregation_method(df, target_column, group_by_colum
         missing_indices = df[df[target_column].isnull()].index
         for idx in missing_indices:
             group_value = df.at[idx, group_by_column]
-            fill_value = agg_func.loc[group_value]
+            fill_value = agg_func.loc[idx]
             print(f"Filling missing value in row {idx} for column '{target_column}' with '{fill_value}' based on group '{group_value}'")
         
         df[target_column] = df.groupby(group_by_column)[target_column].transform(lambda x: x.fillna(x.mode().iloc[0] if not x.mode().empty else np.nan))
