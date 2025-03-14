@@ -99,7 +99,6 @@ def analyze_relationships(df, column1, column2):
 
 # Function to analyze missing data
 def get_missing_data_summary(df):
-    # fix so that 
     """Summarize missing data for each column."""
     total = df.shape[0]
     missing_percent = {}
@@ -112,14 +111,13 @@ def get_missing_data_summary(df):
     return missing_percent
 
 # General function to fill missing values using group-based aggregation method
+import numpy as np
+import pandas as pd
 
 def fill_missing_with_group_aggregation_method(df, target_column, group_by_column, agg_method='mean'):
-    """Fill missing values in a target column with aggregated values (mean, sum, etc.) by group."""
+    """Fill missing values in a target column using a specified aggregation method within each group."""
     
-    # Count missing values
-    missing_indices = df[df[target_column].isnull()].index
-    missing_count = len(missing_indices)
-    print(f"\nNumber of unique indices with missing values in '{target_column}': {missing_count}")
+    missing_count = df[target_column].isnull().sum()
     print(f"\nFilling {missing_count} missing values in '{target_column}' using '{agg_method}' grouped by '{group_by_column}':\n")
 
     if missing_count == 0:
@@ -127,35 +125,49 @@ def fill_missing_with_group_aggregation_method(df, target_column, group_by_colum
         return df
 
     fill_summary = {}  # Dictionary to track how many values were filled per group
-    
-    # If the aggregation method is 'most_frequent', compute mode
-    if agg_method == 'most_frequent':
-        # Compute the most frequent value (mode) per group
-        mode_values = df.groupby(group_by_column)[target_column].agg(lambda x: x.mode().iloc[0] if not x.mode().empty else np.nan)
-        
-        # Fill missing values with the most frequent value per group
-        for group_value, mode_value in mode_values.items():
-            rows_to_fill = df[df[group_by_column] == group_value][target_column].isnull()
-            if rows_to_fill.any():
-                df.loc[df[group_by_column] == group_value, target_column] = df.loc[df[group_by_column] == group_value, target_column].fillna(mode_value)
-                fill_summary[group_value] = rows_to_fill.sum()
+    outlier_counter = 0  # Tracks the current outlier number
 
-                print(f"Group '{group_value}': Filled {fill_summary[group_value]} missing values with mode '{mode_value}'")
+    if agg_method == 'most_frequent':
+        # Compute the most frequent value per group
+        mode_values = df.groupby(group_by_column)[target_column].agg(lambda x: x.mode().iloc[0] if not x.mode().empty else np.nan)
+
+        # Fill missing values based on mode
+        for idx in df[df[target_column].isnull()].index:
+            outlier_counter += 1
+            group_value = df.at[idx, group_by_column]
+            fill_value = mode_values.get(group_value, np.nan)
+
+            if pd.notna(fill_value):
+                print(f"Outlier {outlier_counter}/{missing_count}: Row {idx}: '{target_column}' filled with '{fill_value}' (Group: '{group_value}')")
+                df.at[idx, target_column] = fill_value
+                fill_summary[group_value] = fill_summary.get(group_value, 0) + 1
+            else:
+                print(f"Outlier {outlier_counter}/{missing_count}: Row {idx}: No valid mode found for group '{group_value}', leaving as NaN")
 
     else:
-        # Compute aggregated values (e.g., mean, sum) per group
+        # Compute the aggregated values per group
         agg_func = df.groupby(group_by_column)[target_column].transform(agg_method)
 
-        # Fill missing values with the aggregated value per group
-        for group_value, agg_value in agg_func.groupby(df[group_by_column]).first().items():
-            rows_to_fill = df[df[group_by_column] == group_value][target_column].isnull()
-            if rows_to_fill.any():
-                df.loc[df[group_by_column] == group_value, target_column] = df.loc[df[group_by_column] == group_value, target_column].fillna(agg_value)
-                fill_summary[group_value] = rows_to_fill.sum()
+        # Fill missing values
+        for idx in df[df[target_column].isnull()].index:
+            outlier_counter += 1
+            group_value = df.at[idx, group_by_column]
+            fill_value = agg_func.at[idx]
 
-                print(f"Group '{group_value}': Filled {fill_summary[group_value]} missing values with '{agg_method}' value '{round(agg_value, 2)}'")
+            if pd.notna(fill_value):
+                print(f"Outlier {outlier_counter}/{missing_count}: Row {idx}: '{target_column}' filled with '{round(fill_value, 2)}' (Group: '{group_value}')")
+                df.at[idx, target_column] = fill_value
+                fill_summary[group_value] = fill_summary.get(group_value, 0) + 1
+            else:
+                print(f"Outlier {outlier_counter}/{missing_count}: Row {idx}: No valid '{agg_method}' aggregation found for group '{group_value}', leaving as NaN")
+
+    # Summary Output
+    print("\nSummary of missing value fills per group:")
+    for group, count in fill_summary.items():
+        print(f"  - Group '{group}': {count} values filled")
 
     return df
+
 
 # Summarize dataset information
 def summarize_dataset(df,col_list):

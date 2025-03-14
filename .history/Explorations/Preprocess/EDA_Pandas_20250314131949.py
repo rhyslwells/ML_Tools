@@ -155,6 +155,11 @@ def fill_missing_with_group_aggregation_method(df, target_column, group_by_colum
 
                 print(f"Group '{group_value}': Filled {fill_summary[group_value]} missing values with '{agg_method}' value '{round(agg_value, 2)}'")
 
+    # Summary Output
+    print("\nSummary of missing value fills per group:")
+    for group, count in fill_summary.items():
+        print(f"  - Group '{group}': {count} values filled")
+
     return df
 
 # Summarize dataset information

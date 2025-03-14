@@ -99,7 +99,6 @@ def analyze_relationships(df, column1, column2):
 
 # Function to analyze missing data
 def get_missing_data_summary(df):
-    # fix so that 
     """Summarize missing data for each column."""
     total = df.shape[0]
     missing_percent = {}
@@ -112,48 +111,35 @@ def get_missing_data_summary(df):
     return missing_percent
 
 # General function to fill missing values using group-based aggregation method
-
 def fill_missing_with_group_aggregation_method(df, target_column, group_by_column, agg_method='mean'):
     """Fill missing values in a target column with aggregated values (mean, sum, etc.) by group."""
     
-    # Count missing values
-    missing_indices = df[df[target_column].isnull()].index
-    missing_count = len(missing_indices)
-    print(f"\nNumber of unique indices with missing values in '{target_column}': {missing_count}")
-    print(f"\nFilling {missing_count} missing values in '{target_column}' using '{agg_method}' grouped by '{group_by_column}':\n")
+    print(f"\nFilling missing values in '{target_column}' using '{agg_method}' grouped by '{group_by_column}':\n")
 
-    if missing_count == 0:
-        print("No missing values detected. No action needed.")
-        return df
-
-    fill_summary = {}  # Dictionary to track how many values were filled per group
-    
-    # If the aggregation method is 'most_frequent', compute mode
     if agg_method == 'most_frequent':
-        # Compute the most frequent value (mode) per group
+        # Compute the most frequent value for each group
         mode_values = df.groupby(group_by_column)[target_column].agg(lambda x: x.mode().iloc[0] if not x.mode().empty else np.nan)
         
-        # Fill missing values with the most frequent value per group
-        for group_value, mode_value in mode_values.items():
-            rows_to_fill = df[df[group_by_column] == group_value][target_column].isnull()
-            if rows_to_fill.any():
-                df.loc[df[group_by_column] == group_value, target_column] = df.loc[df[group_by_column] == group_value, target_column].fillna(mode_value)
-                fill_summary[group_value] = rows_to_fill.sum()
-
-                print(f"Group '{group_value}': Filled {fill_summary[group_value]} missing values with mode '{mode_value}'")
+        # Fill missing values based on group mode
+        missing_indices = df[df[target_column].isnull()].index
+        for idx in missing_indices:
+            group_value = df.at[idx, group_by_column]
+            fill_value = mode_values.get(group_value, np.nan)  # Use .get() to handle missing group values safely
+            print(f"Filling row {idx} in '{target_column}' with '{fill_value}' (group '{group_value}')")
+            df.at[idx, target_column] = fill_value
 
     else:
-        # Compute aggregated values (e.g., mean, sum) per group
+        # Compute the aggregated values per group
         agg_func = df.groupby(group_by_column)[target_column].transform(agg_method)
-
-        # Fill missing values with the aggregated value per group
-        for group_value, agg_value in agg_func.groupby(df[group_by_column]).first().items():
-            rows_to_fill = df[df[group_by_column] == group_value][target_column].isnull()
-            if rows_to_fill.any():
-                df.loc[df[group_by_column] == group_value, target_column] = df.loc[df[group_by_column] == group_value, target_column].fillna(agg_value)
-                fill_summary[group_value] = rows_to_fill.sum()
-
-                print(f"Group '{group_value}': Filled {fill_summary[group_value]} missing values with '{agg_method}' value '{round(agg_value, 2)}'")
+        
+        # Fill missing values based on aggregation
+        missing_indices = df[df[target_column].isnull()].index
+        for idx in missing_indices:
+            group_value = df.at[idx, group_by_column]
+            fill_value = agg_func.at[idx]  # Directly accessing the value
+            print(f"Filling row {idx} in '{target_column}' with '{fill_value}' (group '{group_value}')")
+        
+        df[target_column] = df[target_column].fillna(agg_func)
 
     return df
 
