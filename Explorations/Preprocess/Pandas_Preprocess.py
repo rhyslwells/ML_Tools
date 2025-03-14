@@ -169,115 +169,6 @@ def summarize_dataset(df, col_list):
         print(df[column].value_counts())
     return df.head()
 
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-# Assuming the dataset is already loaded as 'df'
-def load_data(file_path):
-    """Load the dataset from a CSV file."""
-    return pd.read_csv(file_path)
-
-# 1. Exploratory Data Analysis (EDA)
-def perform_eda(df):
-    print("\n--- EDA ---")
-    
-    # 1.1 Summary Statistics
-    # print("\nSummary Statistics for Numerical Columns:")
-    # print(df.describe())
-    
-    # 1.2 Distribution Plots
-    # Histogram for `total_sales`
-    plt.figure(figsize=(8, 6))
-    df['total_sales'].hist(bins=20)
-    plt.title('Distribution of Total Sales')
-    plt.xlabel('Total Sales')
-    plt.ylabel('Frequency')
-    plt.show()
-
-    # Bar plot for categorical columns: gender, category, demand_tags
-    # Demand Tags Distribution
-    plt.figure(figsize=(8, 6))
-    df['demand_tags'].value_counts().plot(kind='bar', title='Demand Tags Distribution')
-    plt.xlabel('Demand Tags')
-    plt.ylabel('Count')
-    plt.show()
-
-# 2. Feature Engineering
-# 2. Feature Engineering
-def feature_engineering(df):
-    print("\n--- Feature Engineering ---")
-    
-    # 2.1 Aggregating Total Sales by Region
-    print("\nAggregating Total Sales by Region:")
-    region_sales = df.groupby('region')['total_sales'].sum()
-    print(region_sales)
-
-    # 2.2 Seasonality Analysis: Creating a new feature for season sales
-    df['season_sales'] = df[['fall', 'summer', 'spring', 'winter']].sum(axis=1)
-    print("\nSeasonal Sales by Region:")
-    print(df[['region', 'season_sales']].groupby('region').sum())
-    
-    # 2.3 Gender and Category Interaction: Aggregating Sales by Gender and Category
-    print("\nAggregated Total Sales by Gender and Category:")
-    gender_category_sales = df.groupby(['gender', 'category'])['total_sales'].sum().unstack()
-    print(gender_category_sales)
-
-    # 2.4 Date-based Feature Engineering (if applicable)
-    if 'date' in df.columns:
-        df['month'] = pd.to_datetime(df['date']).dt.month
-        df['day_of_week'] = pd.to_datetime(df['date']).dt.dayofweek
-        print("\nSales by Month:")
-        print(df.groupby('month')['total_sales'].sum())
-        print("\nSales by Day of the Week:")
-        print(df.groupby('day_of_week')['total_sales'].sum())
-
-    # 2.5 Average Sales per Category
-    print("\nAverage Sales per Category:")
-    avg_sales_category = df.groupby('category')['total_sales'].mean()
-    print(avg_sales_category)
-
-    # 2.6 Sales Performance Index
-    if 'items_sold' in df.columns:
-        df['sales_per_item'] = df['total_sales'] / df['items_sold']
-        print("\nSales Performance per Item:")
-        print(df.groupby('category')['sales_per_item'].mean())
-
-    # 2.7 Sales Growth over Seasons
-    df['sales_growth'] = df[['fall', 'summer', 'spring', 'winter']].pct_change(axis=1).sum(axis=1)
-    print("\nSales Growth by Region:")
-    print(df.groupby('region')['sales_growth'].sum())
-
-    # 2.8 Normalizing Sales by Region
-    df['normalized_sales'] = df['total_sales'] / df.groupby('region')['total_sales'].transform('sum')
-    print("\nNormalized Sales by Region:")
-    print(df[['region', 'normalized_sales']].groupby('region').mean())
-
-    # 2.9 Interaction Between Gender and Category
-    df['gender_category_interaction'] = df['gender'] + "_" + df['category']
-    print("\nInteraction Between Gender and Category:")
-    print(df.groupby('gender_category_interaction')['total_sales'].sum())
-
-    # 2.10 Categorizing Sales into High, Medium, and Low
-    bins = [0, 500, 1000, float('inf')]
-    labels = ['Low Sales', 'Medium Sales', 'High Sales']
-    df['sales_category'] = pd.cut(df['total_sales'], bins=bins, labels=labels)
-    print("\nSales Category by Region:")
-    print(df.groupby(['region', 'sales_category'])['total_sales'].sum())
-
-    # 2.11 Target Encoding for Gender
-    gender_sales_avg = df.groupby('gender')['total_sales'].mean()
-    df['gender_encoded'] = df['gender'].map(gender_sales_avg)
-    print("\nTarget Encoded Sales for Gender:")
-    print(df[['gender', 'gender_encoded']].head())
-
-    # 2.12 Priority Index based on Demand and Priority Tags
-    priority_mapping = {'low': 1, 'medium': 2, 'high': 3}
-    df['priority_index'] = df['demand_tags'].map(priority_mapping) + df['priority'].map(priority_mapping)
-    print("\nPriority Index for Products:")
-    print(df[['region', 'category', 'priority_index']].head())
-
-
 
 # Main function to manage the workflow
 def main():
@@ -321,9 +212,6 @@ def main():
     crosstab_result = analyze_relationships(df, 'gender', 'category')
     print(crosstab_result)
 
-    perform_eda(df)
-
-    feature_engineering(df)
 
 if __name__ == "__main__":
     main()
