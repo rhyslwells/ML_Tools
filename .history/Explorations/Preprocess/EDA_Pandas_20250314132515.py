@@ -9,8 +9,9 @@ def load_data(file_path):
 
 
 # Function to unpack nested data (e.g., "summer,fall") in a column
+
 def unpack_nested_data(df, column):
-    """Unpack nested data in a column (comma-separated strings) using explode."""
+    "Unpack nested data in a column (comma-separated strings) using explode."
     def safe_literal_eval(val):
         """Safely convert strings to Python literals (e.g., lists)."""
         try:
@@ -49,12 +50,13 @@ def encode_column(df, column):
     df = df.drop(column, axis=1)
     return df
 
-
 # General preprocessing function
 def preprocess_data(df, columns_to_explode=None, columns_to_encode=None):
     """Preprocess the dataset with general steps."""
+
+    # Preprocessing: General steps before specific dataset preprocessing
     print("\nStarting General Preprocessing...")
-    
+
     # set id column as index
     df.set_index('id', inplace=True)
     
@@ -68,9 +70,6 @@ def preprocess_data(df, columns_to_explode=None, columns_to_encode=None):
         for column in columns_to_encode:
             df = encode_column(df, column)
     
-    # Step 3: Handle missing data
-    df.fillna(np.nan, inplace=True)  # Fill missing data with NaN (if not already)
-
     return df
 
 
@@ -87,8 +86,20 @@ def detect_outliers(df, column):
     return outliers, df_no_outliers
 
 
+# Simplify aggregations using .agg()
+def aggregate_data(df, group_by_column, agg_column):
+    """Simplify aggregations using .agg() method."""
+    summary = df.groupby(group_by_column)[agg_column].agg(['mean', 'sum', 'max'])
+    return summary
+
+# Analyze relationships using crosstab
+def analyze_relationships(df, column1, column2):
+    """Create a crosstab between two columns."""
+    return pd.crosstab(df[column1], df[column2], margins=True)
+
 # Function to analyze missing data
 def get_missing_data_summary(df):
+    # fix so that 
     """Summarize missing data for each column."""
     total = df.shape[0]
     missing_percent = {}
@@ -100,8 +111,8 @@ def get_missing_data_summary(df):
             print(f"{col}: {null_count} ({round(percent, 3)}%)")
     return missing_percent
 
-
 # General function to fill missing values using group-based aggregation method
+
 def fill_missing_with_group_aggregation_method(df, target_column, group_by_column, agg_method='mean'):
     """Fill missing values in a target column with aggregated values (mean, sum, etc.) by group."""
     
@@ -146,29 +157,14 @@ def fill_missing_with_group_aggregation_method(df, target_column, group_by_colum
 
     return df
 
-
-# Simplify aggregations using .agg()
-def aggregate_data(df, group_by_column, agg_column):
-    """Simplify aggregations using .agg() method."""
-    summary = df.groupby(group_by_column)[agg_column].agg(['mean', 'sum', 'max'])
-    return summary
-
-
-# Analyze relationships using crosstab
-def analyze_relationships(df, column1, column2):
-    """Create a crosstab between two columns."""
-    return pd.crosstab(df[column1], df[column2], margins=True)
-
-
 # Summarize dataset information
-def summarize_dataset(df, col_list):
+def summarize_dataset(df,col_list):
     """Summarize dataset information."""
     print(df.info())  # Get the data types and non-null counts
     for column in col_list:
         print(f"\nValue counts for column '{column}':")
         print(df[column].value_counts())
     return df.head()
-
 
 # Main function to manage the workflow
 def main():
@@ -180,27 +176,38 @@ def main():
     # Preprocess data, including exploding and encoding columns like 'season'
     df = preprocess_data(df_unprocessed, columns_to_explode=['season'], columns_to_encode=['season'])
 
-    print("\nDataset Preview:", df.head())
+    # print("\nDataset Preview:", df.head())
+
+    # Dataset summary
+    # print("\nDataset Summary:")
+    # summarize_dataset(df,['region', 'gender', 'category', 'demand_tags','priority', 'summer', 'winter', 'spring', 'fall'])
 
     # Missing data summary
     print("\nMissing Data Summary for columns with missing data:")
     get_missing_data_summary(df)
 
-    # Fill any missing data
+    # Fill missing data by group aggregation (mean)
     df = fill_missing_with_group_aggregation_method(df, 'total_sales', 'region', agg_method='mean')
+
+    # Fix: for categoricals i want to fill using the most frequent for that grouping
     df = fill_missing_with_group_aggregation_method(df, 'demand_tags', 'region', agg_method='most_frequent')
+
 
     print("\nMissing Data Summary After Filling:")
     get_missing_data_summary(df)
 
-    print("\nDataset Preview:", df.head())
-
     # Detect outliers using IQR method for each numerical column
     print("\nOutliers Detection:")
-    cols_outliers = ['total_sales']
-    for col in cols_outliers:
+    for col in df.select_dtypes(include=[np.number]).columns:
         outliers, _ = detect_outliers(df, col)
         print(f"{col} has {outliers.shape[0]} outliers.")
+# 
+    # print(detect_outliers(df, 'total_sales')[0])
+
+    # Aggregated data by demand_tags
+    print("\nAggregated Data by demand_tags:")
+    aggregated_data = aggregate_data(df, 'demand_tags', 'total_sales')
+    print(aggregated_data)
 
     # Aggregated data by region
     print("\nAggregated Data by Region:")
@@ -211,7 +218,6 @@ def main():
     print("\nCrosstab Analysis:")
     crosstab_result = analyze_relationships(df, 'gender', 'category')
     print(crosstab_result)
-
 
 if __name__ == "__main__":
     main()

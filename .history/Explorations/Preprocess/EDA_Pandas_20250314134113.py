@@ -193,8 +193,6 @@ def main():
     print("\nMissing Data Summary After Filling:")
     get_missing_data_summary(df)
 
-    print("\nDataset Preview:", df.head())
-
     # Detect outliers using IQR method for each numerical column
     print("\nOutliers Detection:")
     cols_outliers = ['total_sales']
