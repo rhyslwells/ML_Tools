@@ -4,6 +4,8 @@ venv\Scripts\activate
 
 pip freeze > requirements.txt
 
+poetry add <package-name>
+
 nano .gitignore
 
 echo venv/ >> .gitignore
