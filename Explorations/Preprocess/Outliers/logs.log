@@ -956,3 +956,69 @@
 2025-03-16 08:10:21,266:INFO:Copying data
 2025-03-16 08:10:21,266:INFO:(1000, 12)
 2025-03-16 08:10:21,266:INFO:assign_model() successfully completed......................................
+2025-03-16 08:37:54,370:WARNING:C:\Users\RhysL\AppData\Local\Temp\ipykernel_2492\3350570371.py:17: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df['Anomaly_Level'] = df[anomaly_cols].sum(axis=1).apply(anomaly_label)
+
+2025-03-16 08:42:15,550:WARNING:C:\Users\RhysL\AppData\Local\Temp\ipykernel_2492\1738033983.py:12: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df['Anomaly_Level'] = df[anomaly_cols].sum(axis=1).apply(anomaly_label)
+
+2025-03-16 08:44:55,070:WARNING:C:\Users\RhysL\AppData\Local\Temp\ipykernel_2492\1006759098.py:12: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df['Anomaly_Level'] = df[anomaly_cols].sum(axis=1).apply(anomaly_label)
+
+2025-03-16 09:04:05,782:WARNING:C:\Users\RhysL\AppData\Local\Temp\ipykernel_2492\1006759098.py:12: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+
+2025-03-16 09:09:17,618:WARNING:C:\Users\RhysL\AppData\Local\Temp\ipykernel_2492\1006759098.py:12: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+
+2025-03-16 09:35:52,602:WARNING:C:\Users\RhysL\AppData\Local\Temp\ipykernel_2492\1006759098.py:12: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+
+2025-03-16 09:51:14,370:WARNING:C:\Users\RhysL\AppData\Local\Temp\ipykernel_2492\1006759098.py:12: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+
+2025-03-16 10:15:50,719:WARNING:C:\Users\RhysL\AppData\Local\Temp\ipykernel_2492\1006759098.py:12: SettingWithCopyWarning:
+
+
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+
