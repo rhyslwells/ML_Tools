@@ -75,6 +75,7 @@ df=pd.read_csv("../../../Datasets/heart.csv")
 # df=pd.read_csv("../../../Datasets/homeprices.csv")
 
 
+
 # Apply PCA anomaly detection
 clean_df = pca_anomalies(df)
 

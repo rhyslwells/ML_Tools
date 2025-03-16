@@ -69,12 +69,21 @@ def pca_anomalies(data, threshold=3.5):
     return data[~data['outliers_PCA']]  # Return only non-outlier data
 
 # Load dataset
-# df = pd.read_csv("../../../Datasets/penguins.csv")
-# df=pd.read_csv("../../../Datasets/mtcars.csv")
-df=pd.read_csv("../../../Datasets/heart.csv")
-# df=pd.read_csv("../../../Datasets/homeprices.csv")
-
+df = pd.read_csv("../../../Datasets/penguins.csv")
 
 # Apply PCA anomaly detection
 clean_df = pca_anomalies(df)
 
+# Save cleaned data
+clean_df.to_csv("penguins_cleaned.csv", index=False)
+print("\nCleaned DataFrame saved to 'penguins_cleaned.csv'.")
+
+# Example dataset preview
+print("\nFirst 5 rows of the cleaned dataset:")
+print(clean_df.head())
+
+# Boxplot for a numerical column (bill_length_mm)
+plt.figure(figsize=(10, 6))
+sns.boxplot(x=clean_df['bill_length_mm'], color='lightcoral')
+plt.title('Boxplot for Bill Length')
+plt.show()
