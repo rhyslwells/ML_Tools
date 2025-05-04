@@ -106,5 +106,3 @@ See the effects of creating dummies a summary before and after
 
 data = raw_data.copy()
 data['view'] = data['view'].map({'Sea view': 1, 'No sea view': 0})
-
-Using p-values to evaluate independnat variables impact.
