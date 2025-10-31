@@ -1,0 +1,4 @@
+sheet_url: "https://docs.google.com/spreadsheets/d/XXXXXXXXXX"
+sheet_name: "ML_Tools"
+base_url: "https://github.com/yourusername/ML_Tools/blob/main/"
+output_file: "SUMMARY.md"
