@@ -1,0 +1,34 @@
+name: Generate Markdown Table
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas pyyaml
+
+      - name: Generate Markdown Table
+        run: |
+          python .github/scripts/generate_table.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add Data-Archive-Link-Notes.md
+          git commit -m "Auto-update summary table" || echo "No changes to commit"
+          git push
