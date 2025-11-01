@@ -20,6 +20,3 @@ Exported from this Google Sheet:
 
 **Output:**
 A Markdown table suitable for Obsidian or GitHub with file links.
-
-**Usage:**
-python .github/scripts/generate_table.py

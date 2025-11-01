@@ -48,10 +48,9 @@ if __name__ == "__main__":
     lookup_df = fetch_lookup(cfg["lookup_csv"])
 
     # sort by page name
-    merged = repo_df.merge(lookup_df, left_on="filename", right_on="FileName", how="inner")
+    lookup_df = lookup_df.sort_values("PageName")
 
-    # sort by page name
-    merged = merged.sort_values("PageName")
+    merged = repo_df.merge(lookup_df, left_on="filename", right_on="FileName", how="inner")
 
     markdown = build_markdown(merged, cfg["base_url"])
 
