@@ -34,9 +34,8 @@ def build_markdown(df, base_url):
     md = "| Page | Link |\n|------|------|\n"
     for _, row in df.iterrows():
         page_name = row["PageName"]
-        filename = row["filename"]  # <-- get file name without extension
         full_url = f"{base_url}{row['path']}"
-        md += f"| [[{page_name}]] | [{filename}]({full_url}) |\n"
+        md += f"| [[{page_name}]] | [{page_name}]({full_url}) |\n"
     return md
 
 if __name__ == "__main__":
