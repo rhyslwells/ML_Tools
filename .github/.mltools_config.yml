@@ -1,0 +1,3 @@
+lookup_csv: "docs/Data-Archive-Linker - ML_Tools.csv"
+base_url: "https://github.com/rhyslwells/ML_Tools/blob/main/"
+output_file: "docs/Data-Archive-Link-Table.md"
