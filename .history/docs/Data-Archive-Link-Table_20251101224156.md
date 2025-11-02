@@ -1,7 +1,7 @@
 | Page | Link |
 |------|------|
-| [[ARIMA]] | [Forecasting_AutoArima](https://github.com/rhyslwells/ML_Tools/blob/main/Explorations/Build/TimeSeries/Forecasting_AutoArima.py) |
 | [[ARIMA]] | [ARIMA](https://github.com/rhyslwells/ML_Tools/blob/main/Explorations/Build/TimeSeries/ARIMA.ipynb) |
+| [[ARIMA]] | [Forecasting_AutoArima](https://github.com/rhyslwells/ML_Tools/blob/main/Explorations/Build/TimeSeries/Forecasting_AutoArima.py) |
 | [[Addressing Multicollinearity]] | [Addressing_Multicollinearity](https://github.com/rhyslwells/ML_Tools/blob/main/Explorations/Preprocess/Correlation/Addressing_Multicollinearity.py) |
 | [[Anomaly Detection]] | [Pycaret_Anomaly](https://github.com/rhyslwells/ML_Tools/blob/main/Explorations/Preprocess/Outliers/Pycaret_Anomaly.ipynb) |
 | [[Anomaly Detection in Time Series]] | [TS_Anomaly_Detection](https://github.com/rhyslwells/ML_Tools/blob/main/Explorations/Build/TimeSeries/TS_Anomaly_Detection.py) |
