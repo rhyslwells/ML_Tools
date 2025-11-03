@@ -1,5 +1,4 @@
 """
-Turn to notebook.
 Exploration: Random Forest Classifier on the Iris Dataset
 --------------------------------------------------------
 
