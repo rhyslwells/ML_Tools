@@ -1,0 +1,124 @@
+date_published,title,authors,summary,url,category
+2024-11-27 16:48:24+00:00,LLM-ABBA: Understanding time series via symbolic approximation,"['Erin Carson', 'Xinye Chen', 'Cheng Kang']","The success of large language models (LLMs) for time series has been
+demonstrated in previous work. Utilizing a symbolic time series representation,
+one can efficiently bridge the gap between LLMs and time series. However, the
+remaining challenge is to exploit the semantic information hidden in time
+series by using symbols or existing tokens of LLMs, while aligning the
+embedding space of LLMs according to the hidden information of time series. The
+symbolic time series approximation (STSA) method called adaptive Brownian
+bridge-based symbolic aggregation (ABBA) shows outstanding efficacy in
+preserving salient time series features by modeling time series patterns in
+terms of amplitude and period while using existing tokens of LLMs.
+  In this paper, we introduce a method, called LLM-ABBA, that integrates ABBA
+into large language models for various downstream time series tasks. By
+symbolizing time series, LLM-ABBA compares favorably to the recent
+state-of-the-art (SOTA) in UCR and three medical time series classification
+tasks. Meanwhile, a fixed-polygonal chain trick in ABBA is introduced to
+\kc{avoid obvious drifting} during prediction tasks by significantly mitigating
+the effects of cumulative error arising from misused symbols during the
+transition from symbols to numerical values. In time series regression tasks,
+LLM-ABBA achieves the new SOTA on Time Series Extrinsic Regression (TSER)
+benchmarks. LLM-ABBA also shows competitive prediction capability compared to
+recent SOTA time series prediction results. We believe this framework can also
+seamlessly extend to other time series tasks.",http://arxiv.org/pdf/2411.18506v4,cs.LG
+2024-01-28 21:23:13+00:00,Evaluation of k-means time series clustering based on z-normalization and NP-Free,"['Ming-Chang Lee', 'Jia-Chun Lin', 'Volker Stolz']","Despite the widespread use of k-means time series clustering in various
+domains, there exists a gap in the literature regarding its comprehensive
+evaluation with different time series normalization approaches. This paper
+seeks to fill this gap by conducting a thorough performance evaluation of
+k-means time series clustering on real-world open-source time series datasets.
+The evaluation focuses on two distinct normalization techniques:
+z-normalization and NP-Free. The former is one of the most commonly used
+normalization approach for time series. The latter is a real-time time series
+representation approach, which can serve as a time series normalization
+approach. The primary objective of this paper is to assess the impact of these
+two normalization techniques on k-means time series clustering in terms of its
+clustering quality. The experiments employ the silhouette score, a
+well-established metric for evaluating the quality of clusters in a dataset. By
+systematically investigating the performance of k-means time series clustering
+with these two normalization techniques, this paper addresses the current gap
+in k-means time series clustering evaluation and contributes valuable insights
+to the development of time series clustering.",http://arxiv.org/pdf/2401.15773v1,cs.LG
+2023-12-31 08:23:24+00:00,MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting,"['Wanlin Cai', 'Yuxuan Liang', 'Xianggen Liu', 'Jianshuai Feng', 'Yuankai Wu']","Multivariate time series forecasting poses an ongoing challenge across
+various disciplines. Time series data often exhibit diverse intra-series and
+inter-series correlations, contributing to intricate and interwoven
+dependencies that have been the focus of numerous studies. Nevertheless, a
+significant research gap remains in comprehending the varying inter-series
+correlations across different time scales among multiple time series, an area
+that has received limited attention in the literature. To bridge this gap, this
+paper introduces MSGNet, an advanced deep learning model designed to capture
+the varying inter-series correlations across multiple time scales using
+frequency domain analysis and adaptive graph convolution. By leveraging
+frequency domain analysis, MSGNet effectively extracts salient periodic
+patterns and decomposes the time series into distinct time scales. The model
+incorporates a self-attention mechanism to capture intra-series dependencies,
+while introducing an adaptive mixhop graph convolution layer to autonomously
+learn diverse inter-series correlations within each time scale. Extensive
+experiments are conducted on several real-world datasets to showcase the
+effectiveness of MSGNet. Furthermore, MSGNet possesses the ability to
+automatically learn explainable multi-scale inter-series correlations,
+exhibiting strong generalization capabilities even when applied to
+out-of-distribution samples.",http://arxiv.org/pdf/2401.00423v1,cs.LG
+2021-10-27 11:14:49+00:00,MixSeq: Connecting Macroscopic Time Series Forecasting with Microscopic Time Series Data,"['Zhibo Zhu', 'Ziqi Liu', 'Ge Jin', 'Zhiqiang Zhang', 'Lei Chen', 'Jun Zhou', 'Jianyong Zhou']","Time series forecasting is widely used in business intelligence, e.g.,
+forecast stock market price, sales, and help the analysis of data trend. Most
+time series of interest are macroscopic time series that are aggregated from
+microscopic data. However, instead of directly modeling the macroscopic time
+series, rare literature studied the forecasting of macroscopic time series by
+leveraging data on the microscopic level. In this paper, we assume that the
+microscopic time series follow some unknown mixture probabilistic
+distributions. We theoretically show that as we identify the ground truth
+latent mixture components, the estimation of time series from each component
+could be improved because of lower variance, thus benefitting the estimation of
+macroscopic time series as well. Inspired by the power of Seq2seq and its
+variants on the modeling of time series data, we propose Mixture of Seq2seq
+(MixSeq), an end2end mixture model to cluster microscopic time series, where
+all the components come from a family of Seq2seq models parameterized by
+different parameters. Extensive experiments on both synthetic and real-world
+data show the superiority of our approach.",http://arxiv.org/pdf/2110.14354v1,cs.LG
+2020-01-21 14:48:43+00:00,Motif Difference Field: A Simple and Effective Image Representation of Time Series for Classification,"['Yadong Zhang', 'Xin Chen']","Time series motifs play an important role in the time series analysis. The
+motif-based time series clustering is used for the discovery of higher-order
+patterns or structures in time series data. Inspired by the convolutional
+neural network (CNN) classifier based on the image representations of time
+series, motif difference field (MDF) is proposed. Compared to other image
+representations of time series, MDF is simple and easy to construct. With the
+Fully Convolution Network (FCN) as the classifier, MDF demonstrates the
+superior performance on the UCR time series dataset in benchmark with other
+time series classification methods. It is interesting to find that the triadic
+time series motifs give the best result in the test. Due to the motif
+clustering reflected in MDF, the significant motifs are detected with the help
+of the Gradient-weighted Class Activation Mapping (Grad-CAM). The areas in MDF
+with high weight in Grad-CAM have a high contribution from the significant
+motifs with the desired ordinal patterns associated with the signature patterns
+in time series. However, the signature patterns cannot be identified with the
+neural network classifiers directly based on the time series.",http://arxiv.org/pdf/2001.07582v1,cs.LG
+2019-03-07 09:29:31+00:00,GRATIS: GeneRAting TIme Series with diverse and controllable characteristics,"['Yanfei Kang', 'Rob J Hyndman', 'Feng Li']","The explosion of time series data in recent years has brought a flourish of
+new time series analysis methods, for forecasting, clustering, classification
+and other tasks. The evaluation of these new methods requires either collecting
+or simulating a diverse set of time series benchmarking data to enable reliable
+comparisons against alternative approaches. We propose GeneRAting TIme Series
+with diverse and controllable characteristics, named GRATIS, with the use of
+mixture autoregressive (MAR) models. We simulate sets of time series using MAR
+models and investigate the diversity and coverage of the generated time series
+in a time series feature space. By tuning the parameters of the MAR models,
+GRATIS is also able to efficiently generate new time series with controllable
+features. In general, as a costless surrogate to the traditional data
+collection approach, GRATIS can be used as an evaluation tool for tasks such as
+time series forecasting and classification. We illustrate the usefulness of our
+time series generation process through a time series forecasting application.",http://arxiv.org/pdf/1903.02787v2,stat.ML
+2015-03-17 12:41:30+00:00,Ultra-Fast Shapelets for Time Series Classification,"['Martin Wistuba', 'Josif Grabocka', 'Lars Schmidt-Thieme']","Time series shapelets are discriminative subsequences and their similarity to
+a time series can be used for time series classification. Since the discovery
+of time series shapelets is costly in terms of time, the applicability on long
+or multivariate time series is difficult. In this work we propose Ultra-Fast
+Shapelets that uses a number of random shapelets. It is shown that Ultra-Fast
+Shapelets yield the same prediction quality as current state-of-the-art
+shapelet-based time series classifiers that carefully select the shapelets by
+being by up to three orders of magnitudes. Since this method allows a
+ultra-fast shapelet discovery, using shapelets for long multivariate time
+series classification becomes feasible.
+  A method for using shapelets for multivariate time series is proposed and
+Ultra-Fast Shapelets is proven to be successful in comparison to
+state-of-the-art multivariate time series classifiers on 15 multivariate time
+series datasets from various domains. Finally, time series derivatives that
+have proven to be useful for other time series classifiers are investigated for
+the shapelet-based classifiers. It is shown that they have a positive impact
+and that they are easy to integrate with a simple preprocessing step, without
+the need of adapting the shapelet discovery algorithm.",http://arxiv.org/pdf/1503.05018v1,cs.LG

@@ -13,3 +13,4 @@ Do your own explorations here: [![Binder](https://mybinder.org/badge_logo.svg)](
 - **Explorations**: A collection of scripts and notebooks that showcase specific machine learning concepts, methodologies, and experiments.
 
 - **Explorations**: A collection of use cases.
+- **Docs**: Documentation example https://rhyslwells.github.io/ML_Tools/
