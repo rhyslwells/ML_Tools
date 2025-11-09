@@ -11,9 +11,6 @@ Explorations\Optimisation\Hyperparameter_Tuning
 
 - Build
 
-
-
-
 ------------------------------------------------------------------------------
 Logistic and Random Forest Deep Dives
 - common use cases and tool for implementaing them.
@@ -22,6 +19,5 @@ Classification streamlit?
 
 Inspection stage
 - imbalanced? 
-
 
 - cclustering classification
