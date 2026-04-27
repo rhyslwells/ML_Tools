@@ -7,7 +7,7 @@ authors = [
 ]
 license = {text = "MIT"}
 readme = "README.md"
-requires-python = ">=3.7"  # Update this based on your Python version
+requires-python = ">=3.10"  # Updated to match PySR and category-encoders requirements
 dependencies = [
     "alembic==1.15.1",
     "asttokens==3.0.0",
@@ -95,6 +95,7 @@ dependencies = [
     "pytest==8.3.4",
     "python-dateutil==2.9.0.post0",
     "pytz==2025.1",
+    "pysr==1.5.9",
     "pywin32==308",
     "PyYAML==6.0.2",
     "pyzmq==26.2.1",

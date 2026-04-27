@@ -1,0 +1,372 @@
+{
+  "cytoscape_main.py::cytoscape_workflow_by_tag": {
+    "name": "cytoscape_workflow_by_tag",
+    "file": "cytoscape_main.py",
+    "docstring": "Complete workflow: filter by tag and create Cytoscape visualization.\n\nArgs:\n    data_path: Path to JSON data file\n    tag: Tag to filter by\n    port: Port to run the server on\n    remove_isolated: Remove isolated nodes",
+    "calls": [
+      "data_loader.py::load_data",
+      "data_loader.py::filter_by_tag",
+      "graph_builder.py::build_graph",
+      "network_stats.py::print_statistics",
+      "cytoscape_visualizer.py::run_cytoscape_visualization"
+    ]
+  },
+  "cytoscape_main.py::cytoscape_workflow_by_titles": {
+    "name": "cytoscape_workflow_by_titles",
+    "file": "cytoscape_main.py",
+    "docstring": "Complete workflow: filter by specific titles and create Cytoscape visualization.\n\nArgs:\n    data_path: Path to JSON data file\n    titles: List of normalized filenames to include\n    port: Port to run the server on",
+    "calls": [
+      "data_loader.py::load_data",
+      "data_loader.py::filter_by_titles",
+      "graph_builder.py::build_graph",
+      "network_stats.py::print_statistics",
+      "cytoscape_visualizer.py::run_cytoscape_visualization"
+    ]
+  },
+  "cytoscape_main.py::cytoscape_workflow_largest_component": {
+    "name": "cytoscape_workflow_largest_component",
+    "file": "cytoscape_main.py",
+    "docstring": "Workflow: Extract and visualize the largest connected component with Cytoscape.\n\nArgs:\n    data_path: Path to JSON data file\n    tag: Tag to filter by\n    port: Port to run the server on",
+    "calls": [
+      "data_loader.py::load_data",
+      "data_loader.py::filter_by_tag",
+      "graph_builder.py::build_graph",
+      "graph_builder.py::get_largest_component",
+      "network_stats.py::print_statistics",
+      "cytoscape_visualizer.py::run_cytoscape_visualization"
+    ]
+  },
+  "cytoscape_main.py::cytoscape_workflow_by_category": {
+    "name": "cytoscape_workflow_by_category",
+    "file": "cytoscape_main.py",
+    "docstring": "Workflow: Filter by category and create Cytoscape visualization.\n\nArgs:\n    data_path: Path to JSON data file\n    category: Category to filter by (e.g., 'ML', 'CS')\n    port: Port to run the server on",
+    "calls": [
+      "data_loader.py::load_data",
+      "data_loader.py::filter_by_category",
+      "graph_builder.py::build_graph",
+      "network_stats.py::print_statistics",
+      "cytoscape_visualizer.py::run_cytoscape_visualization"
+    ]
+  },
+  "cytoscape_main.py::main": {
+    "name": "main",
+    "file": "cytoscape_main.py",
+    "docstring": "Main execution with example workflows.",
+    "calls": [
+      "cytoscape_main.py::cytoscape_workflow_by_tag"
+    ]
+  },
+  "cytoscape_visualizer.py::graph_to_cytoscape_elements": {
+    "name": "graph_to_cytoscape_elements",
+    "file": "cytoscape_visualizer.py",
+    "docstring": "Convert NetworkX graph to Cytoscape elements format.\n\nArgs:\n    G: NetworkX DiGraph\n    \nReturns:\n    List of Cytoscape elements (nodes and edges)",
+    "calls": []
+  },
+  "cytoscape_visualizer.py::create_cytoscape_stylesheet": {
+    "name": "create_cytoscape_stylesheet",
+    "file": "cytoscape_visualizer.py",
+    "docstring": "Create Cytoscape stylesheet with enhanced styling.\n\nArgs:\n    category_colors: Dictionary mapping categories to colors\n    \nReturns:\n    List of style dictionaries",
+    "calls": []
+  },
+  "cytoscape_visualizer.py::create_cytoscape_app": {
+    "name": "create_cytoscape_app",
+    "file": "cytoscape_visualizer.py",
+    "docstring": "Create a Dash Cytoscape application for network visualization.\n\nArgs:\n    G: NetworkX DiGraph\n    app_title: Title for the web application\n    port: Port to run the server on\n    category_colors: Dictionary mapping categories to colors\n    \nReturns:\n    Dash app instance",
+    "calls": [
+      "cytoscape_visualizer.py::graph_to_cytoscape_elements",
+      "cytoscape_visualizer.py::create_cytoscape_stylesheet"
+    ]
+  },
+  "cytoscape_visualizer.py::update_layout": {
+    "name": "update_layout",
+    "file": "cytoscape_visualizer.py",
+    "docstring": "Update graph layout based on button clicks.",
+    "calls": []
+  },
+  "cytoscape_visualizer.py::display_node_info": {
+    "name": "display_node_info",
+    "file": "cytoscape_visualizer.py",
+    "docstring": "Display information about the selected node.",
+    "calls": []
+  },
+  "cytoscape_visualizer.py::run_cytoscape_visualization": {
+    "name": "run_cytoscape_visualization",
+    "file": "cytoscape_visualizer.py",
+    "docstring": "Run the Cytoscape visualization app.\n\nArgs:\n    G: NetworkX DiGraph\n    app_title: Title for the application\n    port: Port to run the server on\n    debug: Enable debug mode",
+    "calls": [
+      "cytoscape_visualizer.py::create_cytoscape_app"
+    ]
+  },
+  "data_loader.py::load_data": {
+    "name": "load_data",
+    "file": "data_loader.py",
+    "docstring": "Load JSON data from file.\n\nArgs:\n    filepath: Path to the JSON file\n    \nReturns:\n    List of node dictionaries",
+    "calls": []
+  },
+  "data_loader.py::filter_by_tag": {
+    "name": "filter_by_tag",
+    "file": "data_loader.py",
+    "docstring": "Filter nodes that have the specified tag.\n\nArgs:\n    data: List of node dictionaries\n    tag: Tag to filter by\n    \nReturns:\n    Filtered list of nodes containing the tag",
+    "calls": []
+  },
+  "data_loader.py::filter_by_titles": {
+    "name": "filter_by_titles",
+    "file": "data_loader.py",
+    "docstring": "Filter nodes by a list of titles (normalized filenames).\n\nArgs:\n    data: List of node dictionaries\n    titles: List of normalized filenames to include\n    \nReturns:\n    Filtered list of nodes matching the titles",
+    "calls": []
+  },
+  "data_loader.py::filter_by_category": {
+    "name": "filter_by_category",
+    "file": "data_loader.py",
+    "docstring": "Filter nodes by category.\n\nArgs:\n    data: List of node dictionaries\n    category: Category to filter by (e.g., 'ML', 'CS')\n    \nReturns:\n    Filtered list of nodes in the category",
+    "calls": []
+  },
+  "data_loader.py::get_all_tags": {
+    "name": "get_all_tags",
+    "file": "data_loader.py",
+    "docstring": "Get all unique tags from the dataset.\n\nArgs:\n    data: List of node dictionaries\n    \nReturns:\n    Set of all unique tags",
+    "calls": []
+  },
+  "data_loader.py::get_all_categories": {
+    "name": "get_all_categories",
+    "file": "data_loader.py",
+    "docstring": "Get all unique categories from the dataset.\n\nArgs:\n    data: List of node dictionaries\n    \nReturns:\n    Set of all unique categories",
+    "calls": []
+  },
+  "data_loader.py::print_data_summary": {
+    "name": "print_data_summary",
+    "file": "data_loader.py",
+    "docstring": "Print a summary of the dataset.\n\nArgs:\n    data: List of node dictionaries",
+    "calls": [
+      "data_loader.py::get_all_categories",
+      "data_loader.py::get_all_tags"
+    ]
+  },
+  "draft-manual-polling.py::fetch_contents": {
+    "name": "fetch_contents",
+    "file": "draft-manual-polling.py",
+    "docstring": null,
+    "calls": []
+  },
+  "draft-manual-polling.py::fetch_file": {
+    "name": "fetch_file",
+    "file": "draft-manual-polling.py",
+    "docstring": null,
+    "calls": []
+  },
+  "draft-manual-polling.py::collect_files": {
+    "name": "collect_files",
+    "file": "draft-manual-polling.py",
+    "docstring": null,
+    "calls": [
+      "draft-manual-polling.py::fetch_contents",
+      "draft-manual-polling.py::collect_files"
+    ]
+  },
+  "draft-manual-polling.py::main": {
+    "name": "main",
+    "file": "draft-manual-polling.py",
+    "docstring": null,
+    "calls": [
+      "draft-manual-polling.py::collect_files"
+    ]
+  },
+  "graph_builder.py::build_graph": {
+    "name": "build_graph",
+    "file": "graph_builder.py",
+    "docstring": "Build NetworkX directed graph from filtered data.\n\nArgs:\n    data: List of node dictionaries\n    remove_isolated: If True, remove nodes with no connections\n    \nReturns:\n    NetworkX DiGraph object",
+    "calls": []
+  },
+  "graph_builder.py::get_largest_component": {
+    "name": "get_largest_component",
+    "file": "graph_builder.py",
+    "docstring": "Extract the largest weakly connected component from the graph.\n\nArgs:\n    G: NetworkX DiGraph\n    \nReturns:\n    Subgraph containing the largest component",
+    "calls": []
+  },
+  "graph_builder.py::filter_by_degree": {
+    "name": "filter_by_degree",
+    "file": "graph_builder.py",
+    "docstring": "Filter graph to keep only nodes with at least min_degree connections.\n\nArgs:\n    G: NetworkX DiGraph\n    min_degree: Minimum total degree (in-degree + out-degree)\n    \nReturns:\n    Filtered subgraph",
+    "calls": []
+  },
+  "graph_builder.py::get_ego_graph": {
+    "name": "get_ego_graph",
+    "file": "graph_builder.py",
+    "docstring": "Get the ego graph (neighborhood) around a center node.\n\nArgs:\n    G: NetworkX DiGraph\n    center_node: Node to center the ego graph on\n    radius: Distance from center node to include\n    \nReturns:\n    Ego subgraph",
+    "calls": []
+  },
+  "linkage.py::extract_links": {
+    "name": "extract_links",
+    "file": "linkage.py",
+    "docstring": "Extract Obsidian-style wiki links from text.\n\nSupports:\n  [[target]]\n  [[target|display]]\n\nReturns the raw target string before any normalization.",
+    "calls": []
+  },
+  "linkage.py::normalize_title": {
+    "name": "normalize_title",
+    "file": "linkage.py",
+    "docstring": "Normalize a filename or link target into a canonical identifier.",
+    "calls": []
+  },
+  "linkage.py::link_category_snapshot": {
+    "name": "link_category_snapshot",
+    "file": "linkage.py",
+    "docstring": null,
+    "calls": [
+      "linkage.py::normalize_title",
+      "linkage.py::extract_links"
+    ]
+  },
+  "metrics-graph.py::build_graph_metrics_csv": {
+    "name": "build_graph_metrics_csv",
+    "file": "metrics-graph.py",
+    "docstring": null,
+    "calls": []
+  },
+  "metrics-structural.py::markdown_to_text": {
+    "name": "markdown_to_text",
+    "file": "metrics-structural.py",
+    "docstring": null,
+    "calls": []
+  },
+  "metrics-structural.py::extract_structural_metrics": {
+    "name": "extract_structural_metrics",
+    "file": "metrics-structural.py",
+    "docstring": null,
+    "calls": [
+      "metrics-structural.py::markdown_to_text"
+    ]
+  },
+  "metrics-structural.py::build_structural_csv": {
+    "name": "build_structural_csv",
+    "file": "metrics-structural.py",
+    "docstring": null,
+    "calls": [
+      "metrics-structural.py::extract_structural_metrics"
+    ]
+  },
+  "network_stats.py::calculate_basic_stats": {
+    "name": "calculate_basic_stats",
+    "file": "network_stats.py",
+    "docstring": "Calculate basic network statistics.\n\nArgs:\n    G: NetworkX DiGraph\n    \nReturns:\n    Dictionary of basic statistics",
+    "calls": []
+  },
+  "network_stats.py::calculate_centrality_measures": {
+    "name": "calculate_centrality_measures",
+    "file": "network_stats.py",
+    "docstring": "Calculate various centrality measures for the graph.\n\nArgs:\n    G: NetworkX DiGraph\n    top_n: Number of top nodes to return for each measure\n    \nReturns:\n    Dictionary of centrality measures",
+    "calls": []
+  },
+  "network_stats.py::calculate_clustering_stats": {
+    "name": "calculate_clustering_stats",
+    "file": "network_stats.py",
+    "docstring": "Calculate clustering statistics.\n\nArgs:\n    G: NetworkX DiGraph\n    \nReturns:\n    Dictionary of clustering statistics",
+    "calls": []
+  },
+  "network_stats.py::find_isolated_nodes": {
+    "name": "find_isolated_nodes",
+    "file": "network_stats.py",
+    "docstring": "Find all isolated nodes (nodes with no connections).\n\nArgs:\n    G: NetworkX DiGraph\n    \nReturns:\n    List of isolated node IDs",
+    "calls": []
+  },
+  "network_stats.py::print_statistics": {
+    "name": "print_statistics",
+    "file": "network_stats.py",
+    "docstring": "Print comprehensive network statistics.\n\nArgs:\n    G: NetworkX DiGraph\n    detailed: If True, print detailed statistics including centrality measures",
+    "calls": [
+      "network_stats.py::calculate_basic_stats",
+      "network_stats.py::find_isolated_nodes",
+      "network_stats.py::calculate_centrality_measures",
+      "network_stats.py::calculate_clustering_stats"
+    ]
+  },
+  "network_stats.py::export_statistics_to_dict": {
+    "name": "export_statistics_to_dict",
+    "file": "network_stats.py",
+    "docstring": "Export all statistics as a dictionary (useful for saving to JSON).\n\nArgs:\n    G: NetworkX DiGraph\n    \nReturns:\n    Dictionary containing all statistics",
+    "calls": [
+      "network_stats.py::calculate_basic_stats",
+      "network_stats.py::calculate_centrality_measures",
+      "network_stats.py::calculate_clustering_stats",
+      "network_stats.py::find_isolated_nodes"
+    ]
+  },
+  "pyvis_main.py::workflow_by_tag": {
+    "name": "workflow_by_tag",
+    "file": "pyvis_main.py",
+    "docstring": "Complete workflow: filter by tag and create visualization.\n\nArgs:\n    data_path: Path to JSON data file\n    tag: Tag to filter by\n    output_prefix: Prefix for output files",
+    "calls": [
+      "data_loader.py::load_data",
+      "data_loader.py::filter_by_tag",
+      "graph_builder.py::build_graph",
+      "network_stats.py::print_statistics",
+      "pyvis_visualizer.py::create_pyvis_network"
+    ]
+  },
+  "pyvis_main.py::workflow_by_titles": {
+    "name": "workflow_by_titles",
+    "file": "pyvis_main.py",
+    "docstring": "Complete workflow: filter by specific titles and create visualization.\n\nArgs:\n    data_path: Path to JSON data file\n    titles: List of normalized filenames to include\n    output_file: Output HTML filename",
+    "calls": [
+      "data_loader.py::load_data",
+      "data_loader.py::filter_by_titles",
+      "graph_builder.py::build_graph",
+      "network_stats.py::print_statistics",
+      "pyvis_visualizer.py::create_pyvis_network"
+    ]
+  },
+  "pyvis_main.py::workflow_largest_component": {
+    "name": "workflow_largest_component",
+    "file": "pyvis_main.py",
+    "docstring": "Workflow: Extract and visualize the largest connected component.\n\nArgs:\n    data_path: Path to JSON data file\n    tag: Tag to filter by\n    output_file: Output HTML filename",
+    "calls": [
+      "data_loader.py::load_data",
+      "data_loader.py::filter_by_tag",
+      "graph_builder.py::build_graph",
+      "graph_builder.py::get_largest_component",
+      "network_stats.py::print_statistics",
+      "pyvis_visualizer.py::create_pyvis_network"
+    ]
+  },
+  "pyvis_main.py::workflow_by_category": {
+    "name": "workflow_by_category",
+    "file": "pyvis_main.py",
+    "docstring": "Workflow: Filter by category and create visualization.\n\nArgs:\n    data_path: Path to JSON data file\n    category: Category to filter by (e.g., 'ML', 'CS')\n    output_prefix: Prefix for output files",
+    "calls": [
+      "data_loader.py::load_data",
+      "data_loader.py::filter_by_category",
+      "graph_builder.py::build_graph",
+      "network_stats.py::print_statistics",
+      "pyvis_visualizer.py::create_pyvis_network"
+    ]
+  },
+  "pyvis_main.py::main": {
+    "name": "main",
+    "file": "pyvis_main.py",
+    "docstring": "Main execution with example workflows.",
+    "calls": [
+      "pyvis_main.py::workflow_by_tag",
+      "pyvis_main.py::workflow_by_titles",
+      "pyvis_main.py::workflow_largest_component"
+    ]
+  },
+  "pyvis_visualizer.py::create_pyvis_network": {
+    "name": "create_pyvis_network",
+    "file": "pyvis_visualizer.py",
+    "docstring": "Create an interactive PyVis network visualization with enhanced styling.\n\nArgs:\n    G: NetworkX DiGraph\n    output_file: Output HTML filename\n    height: Height of the visualization\n    width: Width of the visualization\n    bgcolor: Background color\n    font_color: Font color\n    physics_enabled: Enable/disable physics simulation\n    category_colors: Dictionary mapping categories to colors\n    \nReturns:\n    PyVis Network object",
+    "calls": [
+      "pyvis_visualizer.py::get_node_size"
+    ]
+  },
+  "pyvis_visualizer.py::get_node_size": {
+    "name": "get_node_size",
+    "file": "pyvis_visualizer.py",
+    "docstring": null,
+    "calls": []
+  },
+  "pyvis_visualizer.py::create_minimal_network": {
+    "name": "create_minimal_network",
+    "file": "pyvis_visualizer.py",
+    "docstring": "Create a minimal, static network visualization without physics.\n\nArgs:\n    G: NetworkX DiGraph\n    output_file: Output HTML filename\n    layout: Layout algorithm ('hierarchical', 'random', etc.)\n    \nReturns:\n    PyVis Network object",
+    "calls": []
+  }
+}
