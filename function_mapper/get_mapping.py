@@ -4,7 +4,7 @@ import json
 from collections import defaultdict
 
 ROOT_PATH = r"C:\Users\RhysL\Desktop\Projects\Data-Archive-Explorer\src"
-OUTPUT_FILE = "output.json"
+OUTPUT_FILE = os.path.join(os.path.dirname(__file__), "output.json")
 
 # Folders to ignore (by name, anywhere in the tree)
 EXCLUDE_DIRS = {
